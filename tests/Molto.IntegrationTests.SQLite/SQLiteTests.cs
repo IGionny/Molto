@@ -12,11 +12,19 @@ namespace Molto.IntegrationTests.SQLite
     public class SQLiteTests
     {
 
+        private string _createTableTestSql = "CREATE TABLE test (id uniqueidentifier not null, name varchar(255), amount decimal(18,5), isvalid bit, eta bigint, createdat datetime); ";
+        private string _dropTableTestSql = "DROP TABLE test";
+
+        public SQLiteTests()
+        {
+
+        }
+
         protected IDb MakeDb()
         {
-            SQLiteConnection.CreateFile("MyDatabase.sqlite");
+//            SQLiteConnection.CreateFile("MyDatabase.sqlite");
 
-            string connectionString = "Data Source=MyDatabase.sqlite;Version=3;";
+            string connectionString = "Data Source=:memory:;Version=3;";
             IDbConnectionProvider dbConnectionProvider = new InMemoryDbConnectionProvider();
             dbConnectionProvider.AddConnectionFactory("default", new SQLiteConnectionMaker(connectionString));
             IDbValueConverter dbValueConverter = new StrategiesDbValueConverter();
@@ -25,6 +33,9 @@ namespace Molto.IntegrationTests.SQLite
             entityDatabaseMapProvider.AddMap<Test>();
             ISqlQueryBuilder sqlQueryBuilder = new SqlQueryBuilder(entityDatabaseMapProvider);
             var db = new Db(dbConnectionProvider, dbValueConverter, dataReaderToPoco, sqlQueryBuilder);
+
+            db.Execute(_createTableTestSql);
+
             return db;
         }
 
@@ -34,13 +45,13 @@ namespace Molto.IntegrationTests.SQLite
             //Arrange
             using (var db = MakeDb())
             {
-                string sql = "CREATE TABLE test (id uniqueidentifier not null, name varchar(255), amount decimal(18,5), isvalid bit, eta bigint, createdat timestamp) ";
+                var resultDrop = db.Execute(_dropTableTestSql);
 
                 //Act
-                var result = db.Execute(sql);
+                var resultCreate = db.Execute(_createTableTestSql);
 
                 //Assert
-                result.Should().Be(0);
+                //do not throw
             }
         }
 
@@ -89,7 +100,7 @@ namespace Molto.IntegrationTests.SQLite
                 resultQuery[0].CreatedAt.Minute.Should().Be(item.CreatedAt.Minute);
                 resultQuery[0].CreatedAt.Second.Should().Be(item.CreatedAt.Second);
                 //resultQuery[0].CreatedAt.Millisecond.Should().Be(item.CreatedAt.Millisecond); //! this can be different
-                //resultQuery[0].CreatedAt.Kind.Should().Be(item.CreatedAt.Kind); //! Mssql return Unspecified
+                resultQuery[0].CreatedAt.Kind.Should().Be(item.CreatedAt.Kind); //! Mssql return Unspecified
                 resultQuery[0].Eta.Should().Be(item.Eta);
 
             }

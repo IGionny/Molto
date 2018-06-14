@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Molto.Abstractions;
 using Molto.Utilities;
 
@@ -37,17 +39,34 @@ namespace Molto
             for (var i = 0; i < reader.FieldCount; i++)
             {
                 var name = reader.GetName(i);
-                var prop = map.Properties.SingleOrDefault(x => x.ColumnName == name);
+                var prop = map.Properties.SingleOrDefault(x => string.Equals(x.ColumnName, name, StringComparison.InvariantCultureIgnoreCase));
                 if (prop == null)
                 {
                     continue;
                 }
 
                 var value = reader[i];
-                prop.Property.SetValue(result, value);
+                var convertedValue = ConvertValue(value);
+                prop.Property.SetValue(result, convertedValue);
 
             }
             return result;
+        }
+
+        public object ConvertValue(object dbValue)
+        {
+            if (dbValue == null)
+            {
+                return null;
+            }
+
+            if (dbValue is DateTime datetime)
+            {
+                //Force UTC kind
+                return new DateTime((datetime).Ticks, DateTimeKind.Utc);
+            }
+
+            return dbValue;
         }
 
     }

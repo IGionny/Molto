@@ -70,7 +70,7 @@ namespace Molto.IntegrationTests.MsSql2014
                 resultQuery[0].CreatedAt.Minute.Should().Be(item.CreatedAt.Minute);
                 resultQuery[0].CreatedAt.Second.Should().Be(item.CreatedAt.Second);
                 //resultQuery[0].CreatedAt.Millisecond.Should().Be(item.CreatedAt.Millisecond); //! this can be different
-                //resultQuery[0].CreatedAt.Kind.Should().Be(item.CreatedAt.Kind); //! Mssql return Unspecified
+                resultQuery[0].CreatedAt.Kind.Should().Be(item.CreatedAt.Kind); //! Mssql return Unspecified
                 resultQuery[0].Eta.Should().Be(item.Eta);
 
             }

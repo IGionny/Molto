@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
+
   <ItemGroup>
     <!-- tests -->
     <PackageReference Include="FluentAssertions" Version="5.4.0" />
@@ -13,14 +13,14 @@
     <PackageReference Include="xunit" Version="2.3.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Molto.MsSql2014\Molto.MsSql2014.csproj" />
-    <ProjectReference Include="..\..\src\Molto\Molto.csproj" />
-    <ProjectReference Include="..\Molto.IntegrationTests.Abstractions\Molto.IntegrationTests.Abstractions.csproj" />
-  </ItemGroup>
-  <ItemGroup>
+   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Molto.SQLite\Molto.SQLite.csproj" />
+    <ProjectReference Include="..\..\src\Molto\Molto.csproj" />
+    <ProjectReference Include="..\Molto.IntegrationTests.Abstractions\Molto.IntegrationTests.Abstractions.csproj" />
+  </ItemGroup>
 
 </Project>

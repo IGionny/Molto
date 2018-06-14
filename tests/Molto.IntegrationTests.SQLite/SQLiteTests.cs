@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Data.SQLite;
 using System.Linq;
 using FluentAssertions;
 using Molto.Abstractions;
 using Molto.IntegrationTests.Abstractions;
-using Molto.MsSql2014;
+using Molto.SQLite;
 using Xunit;
 
-namespace Molto.IntegrationTests.MsSql2014
+namespace Molto.IntegrationTests.SQLite
 {
-    public class MsSql2014Tests
+    public class SQLiteTests
     {
 
         protected IDb MakeDb()
         {
-            string connectionString = "Data Source=.\\;Initial Catalog=tests;User Id=test;Password=test;Trusted_Connection=False;";
+            SQLiteConnection.CreateFile("MyDatabase.sqlite");
+
+            string connectionString = "Data Source=MyDatabase.sqlite;Version=3;";
             IDbConnectionProvider dbConnectionProvider = new InMemoryDbConnectionProvider();
-            dbConnectionProvider.AddConnectionFactory("default", new MsSql2014ConnectionMaker(connectionString));
+            dbConnectionProvider.AddConnectionFactory("default", new SQLiteConnectionMaker(connectionString));
             IDbValueConverter dbValueConverter = new StrategiesDbValueConverter();
             IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider();
             IDataReaderToPoco dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
@@ -23,6 +26,22 @@ namespace Molto.IntegrationTests.MsSql2014
             ISqlQueryBuilder sqlQueryBuilder = new SqlQueryBuilder(entityDatabaseMapProvider);
             var db = new Db(dbConnectionProvider, dbValueConverter, dataReaderToPoco, sqlQueryBuilder);
             return db;
+        }
+
+        [Fact]
+        public void Query_CreateTable()
+        {
+            //Arrange
+            using (var db = MakeDb())
+            {
+                string sql = "CREATE TABLE test (id uniqueidentifier not null, name varchar(255), amount decimal(18,5), isvalid bit, eta bigint, createdat timestamp) ";
+
+                //Act
+                var result = db.Execute(sql);
+
+                //Assert
+                result.Should().Be(0);
+            }
         }
 
         [Fact]

@@ -9,11 +9,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.Abstractions", "src\M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.Tests", "tests\Molto.Tests\Molto.Tests.csproj", "{125BFB45-CA37-4AF2-A6B3-47B8CF9CC432}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.IntegrationTests.MsSql2014", "tests\Molto.IntegrationTests.MsSql2014\Molto.IntegrationTests.MsSql2014.csproj", "{9D503831-A5A8-4D31-8675-F209B14D2239}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.IntegrationTests.MsSql2014", "tests\Molto.IntegrationTests.MsSql2014\Molto.IntegrationTests.MsSql2014.csproj", "{9D503831-A5A8-4D31-8675-F209B14D2239}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.IntegrationTests.Abstractions", "tests\Molto.IntegrationTests.Abstractions\Molto.IntegrationTests.Abstractions.csproj", "{19076392-C30B-4AE0-8E55-89BE29097552}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.IntegrationTests.Abstractions", "tests\Molto.IntegrationTests.Abstractions\Molto.IntegrationTests.Abstractions.csproj", "{19076392-C30B-4AE0-8E55-89BE29097552}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.MsSql2014", "src\Molto.MsSql2014\Molto.MsSql2014.csproj", "{37424D1C-2786-4F2F-AD59-AD3F27122E7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.MsSql2014", "src\Molto.MsSql2014\Molto.MsSql2014.csproj", "{37424D1C-2786-4F2F-AD59-AD3F27122E7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.SQLite", "src\Molto.SQLite\Molto.SQLite.csproj", "{6F35B696-6818-480E-87D2-1ABD4E732BAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.IntegrationTests.SQLite", "tests\Molto.IntegrationTests.SQLite\Molto.IntegrationTests.SQLite.csproj", "{9F05AE6C-E3A4-4C60-8496-7229C5390396}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{37424D1C-2786-4F2F-AD59-AD3F27122E7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37424D1C-2786-4F2F-AD59-AD3F27122E7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37424D1C-2786-4F2F-AD59-AD3F27122E7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F35B696-6818-480E-87D2-1ABD4E732BAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F35B696-6818-480E-87D2-1ABD4E732BAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F35B696-6818-480E-87D2-1ABD4E732BAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F35B696-6818-480E-87D2-1ABD4E732BAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F05AE6C-E3A4-4C60-8496-7229C5390396}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F05AE6C-E3A4-4C60-8496-7229C5390396}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F05AE6C-E3A4-4C60-8496-7229C5390396}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F05AE6C-E3A4-4C60-8496-7229C5390396}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

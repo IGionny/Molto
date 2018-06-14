@@ -11,5 +11,7 @@ namespace Molto.Abstractions
     public interface ISqlQueryBuilder
     {
         string SelectSql<T>(string sql);
+        string InsertSql<T>();
+        object[] GetValues<T>(T item);
     }
 }

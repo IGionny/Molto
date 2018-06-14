@@ -12,6 +12,8 @@ namespace Molto
 
         IEnumerable<T> Query<T>(string sql, params object[] args);
 
+        int Insert<T>(T item);
+
         Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql, params object[] args);
     }
 
@@ -127,6 +129,15 @@ namespace Molto
                     }
                 }
             }
+        }
+
+        public int Insert<T>(T item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var sql =_sqlQueryBuilder.InsertSql<T>();
+            object[] values = _sqlQueryBuilder.GetValues<T>(item);
+            var result = Execute(sql, values);
+            return result;
         }
 
         public Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql, params object[] args)

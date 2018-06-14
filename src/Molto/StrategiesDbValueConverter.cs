@@ -40,7 +40,7 @@ namespace Molto
                 return;
             }
 
-
+            parameter.Value = value;
 
         }
     }

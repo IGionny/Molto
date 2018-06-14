@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
+using System.Text;
 
 namespace Molto.Abstractions
 {
@@ -25,8 +26,14 @@ namespace Molto.Abstractions
         }
         public string Table { get; set; }
         public Type EntityType { get; set; }
-        public string SqlSelect { get; set; }
-        public IList<EntityPropertyMap> Properties { get; set; }
+
+       public IList<EntityPropertyMap> Properties { get; set; }
+
+        public object CreateInstance()
+        {
+            var result = Activator.CreateInstance(EntityType);
+            return result;
+        }
     }
 
     public class EntityPropertyMap

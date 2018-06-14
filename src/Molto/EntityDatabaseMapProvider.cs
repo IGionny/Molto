@@ -20,6 +20,10 @@ namespace Molto
 
         public EntityMap Get<T>()
         {
+            if (!_maps.ContainsKey(typeof(T)))
+            {
+                return null;
+            }
             return _maps[typeof(T)];
         }
 

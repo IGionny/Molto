@@ -7,6 +7,7 @@ namespace Molto.Abstractions
         T Convert<T>(IDataReader reader);
     }
 
+
     public interface ISqlQueryBuilder
     {
         string SelectSql<T>(string sql);

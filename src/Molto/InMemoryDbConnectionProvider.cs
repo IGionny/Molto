@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Molto.Abstractions;
 
 namespace Molto
@@ -25,6 +26,10 @@ namespace Molto
 
         public IDbConnection GetConnection(string name = null)
         {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return _dbConnectionFactory.FirstOrDefault().Value?.NewConnection();
+            }
             if (!_dbConnectionFactory.ContainsKey(name))
             {
                 throw new Exception($"{name} connection not found");

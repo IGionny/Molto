@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Molto.Abstractions;
 
@@ -24,11 +27,18 @@ namespace Molto
 
             StringBuilder sb = new StringBuilder();
             sb.Append("SELECT ");
-            sb.Append(map.SqlSelect);
-            sb.Append("FROM ");
+            sb.Append(GetFields<T>(map));
+            sb.Append(" FROM ");
             sb.Append(EscapeTableName(map.Table));
             sb.Append(sql);
             return sb.ToString();
+        }
+
+        public string GetFields<T>(EntityMap map)
+        {
+            IList<string> columns = map.Properties.Select(x => x.ColumnName).ToList();
+
+            return string.Join(",", columns);
         }
 
         public string EscapeTableName(string table)

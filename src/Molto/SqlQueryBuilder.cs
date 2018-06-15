@@ -59,7 +59,7 @@ namespace Molto
             sb.Append(EscapeTableName(map.Table));
             sb.Append(" (");
             sb.Append(string.Join(",", columns));
-            sb.Append(") VALUES (");          
+            sb.Append(") VALUES (");
             int i = -1;
             sb.Append(string.Join(",", columns.Select(x =>
             {
@@ -69,6 +69,33 @@ namespace Molto
             sb.Append(")");
             return sb.ToString();
 
+        }
+
+        public IDictionary<EntityPropertyMap, object> GetColumnsValue<T>(T item)
+        {
+            var map = _entityDatabaseMapProvider.Get<T>();
+            var result = new Dictionary<EntityPropertyMap, object>(map.Properties.Count);
+            foreach (var property in map.Properties)
+            {
+                var value = property.Property.GetValue(item);
+                result.Add(property, value);
+            }
+
+            return result;
+        }
+
+        public object GetPrimaryKeyValue<T>(T item)
+        {
+            var map = _entityDatabaseMapProvider.Get<T>();
+
+            if (map.PrimaryKey == null)
+            {
+                throw new Exception($"The map of '{typeof(T).Name}' does not provide a PrimaryKey");
+            }
+
+            var result = map.PrimaryKey.Property.GetValue(item);
+
+            return result;
         }
 
         public object[] GetValues<T>(T item)
@@ -82,6 +109,42 @@ namespace Molto
             }
 
             return result.ToArray();
+        }
+
+        public string UpdateSql<T>()
+        {
+            var map = _entityDatabaseMapProvider.Get<T>();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("UPDATE ");
+            sb.Append(EscapeTableName(map.Table));
+            sb.Append(" SET ");
+
+            IList<string> columns = new List<string>(map.Properties.Count -1);
+            int i = 0;
+            foreach (var propertyMap in map.Properties.Where(x => !x.IsPrimaryKey))
+            {
+                columns.Add(propertyMap.ColumnName + " = @" + i + " ");
+                i++;
+            }
+
+            sb.Append(string.Join(",", columns));
+
+            sb.Append(" WHERE " + map.PrimaryKey.ColumnName + " = @" + i);
+            return sb.ToString();
+        }
+
+        public string Delete<T>()
+        {
+            var map = _entityDatabaseMapProvider.Get<T>();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("DELETE ");
+            sb.Append(EscapeTableName(map.Table));
+            sb.Append(" WHERE " + map.PrimaryKey.ColumnName + " = @0 ");
+            return sb.ToString();
         }
 
         public string GetFields<T>(EntityMap map)

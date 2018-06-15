@@ -15,9 +15,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.IntegrationTests.Abst
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.MsSql2014", "src\Molto.MsSql2014\Molto.MsSql2014.csproj", "{37424D1C-2786-4F2F-AD59-AD3F27122E7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.SQLite", "src\Molto.SQLite\Molto.SQLite.csproj", "{6F35B696-6818-480E-87D2-1ABD4E732BAB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.SQLite", "src\Molto.SQLite\Molto.SQLite.csproj", "{6F35B696-6818-480E-87D2-1ABD4E732BAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.IntegrationTests.SQLite", "tests\Molto.IntegrationTests.SQLite\Molto.IntegrationTests.SQLite.csproj", "{9F05AE6C-E3A4-4C60-8496-7229C5390396}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.IntegrationTests.SQLite", "tests\Molto.IntegrationTests.SQLite\Molto.IntegrationTests.SQLite.csproj", "{9F05AE6C-E3A4-4C60-8496-7229C5390396}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{28248998-1CBF-4779-8C58-179D4A376A4B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5DB6AED7-AFE0-4A03-9413-C09DB12D1453}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +67,12 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{125BFB45-CA37-4AF2-A6B3-47B8CF9CC432} = {28248998-1CBF-4779-8C58-179D4A376A4B}
+		{9D503831-A5A8-4D31-8675-F209B14D2239} = {28248998-1CBF-4779-8C58-179D4A376A4B}
+		{19076392-C30B-4AE0-8E55-89BE29097552} = {28248998-1CBF-4779-8C58-179D4A376A4B}
+		{9F05AE6C-E3A4-4C60-8496-7229C5390396} = {28248998-1CBF-4779-8C58-179D4A376A4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {303C6E0C-DB4E-4393-B5CE-2B5598CA1837}

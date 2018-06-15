@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using Molto.Abstractions;
 
@@ -13,6 +14,10 @@ namespace Molto
         IEnumerable<T> Query<T>(string sql, params object[] args);
 
         int Insert<T>(T item);
+
+        int Update<T>(T item);
+
+        int Delete<T>(T item);
 
         Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql, params object[] args);
     }
@@ -92,8 +97,16 @@ namespace Molto
         {
             using (IDbCommand cmd = CreateCommand(sql, args))
             {
-                var result = cmd.ExecuteNonQuery();
-                return result;
+                try
+                {
+                    var result = cmd.ExecuteNonQuery();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"The query $'{sql}' throw '{ex.Message}' ", ex);
+                }
+
             }
         }
 
@@ -136,6 +149,26 @@ namespace Molto
             if (item == null) throw new ArgumentNullException(nameof(item));
             var sql =_sqlQueryBuilder.InsertSql<T>();
             object[] values = _sqlQueryBuilder.GetValues<T>(item);
+            var result = Execute(sql, values);
+            return result;
+        }
+
+        public int Update<T>(T item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var sql = _sqlQueryBuilder.UpdateSql<T>();
+            //Get all the properties value except for the primary key
+            var values = _sqlQueryBuilder.GetColumnsValue<T>(item).Where(x => !x.Key.IsPrimaryKey).Select(x => x.Value).ToList();
+            values.Add(_sqlQueryBuilder.GetPrimaryKeyValue(item));
+            var result = Execute(sql, values.ToArray());
+            return result;
+        }
+
+        public int Delete<T>(T item)
+        {
+            if (item == null) throw new ArgumentNullException(nameof(item));
+            var sql = _sqlQueryBuilder.Delete<T>();
+            object[] values = new object[1] {_sqlQueryBuilder.GetPrimaryKeyValue(item)};
             var result = Execute(sql, values);
             return result;
         }

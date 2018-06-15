@@ -31,14 +31,19 @@ namespace Molto
         {
             var result = new EntityMap();
             var type = typeof(T);
-            result.Table = type.Name;
+            result.Table = type.Name; //Convention:  EntityName === TableName
             result.EntityType = type;
             foreach (var prop in type.GetProperties())
+            {
+                //Convention: the primary key name is always 'Id'
+                bool isPrimaryKey = string.Equals(prop.Name, "Id", StringComparison.InvariantCultureIgnoreCase);
                 result.Properties.Add(new EntityPropertyMap
                 {
+                    IsPrimaryKey = isPrimaryKey,
                     Property = prop,
                     ColumnName = prop.Name
                 });
+            }
 
             return result;
         }

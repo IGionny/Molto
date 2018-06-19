@@ -46,8 +46,15 @@ namespace Molto
                 }
 
                 var value = reader[i];
-                var convertedValue = ConvertValue(value);
-                prop.Property.SetValue(result, convertedValue);
+                if (value is DBNull)
+                {
+                    prop.Property.SetValue(result, null);
+                }
+                else
+                {
+                    var convertedValue = ConvertValue(value);
+                    prop.Property.SetValue(result, convertedValue);
+                }
 
             }
             return result;

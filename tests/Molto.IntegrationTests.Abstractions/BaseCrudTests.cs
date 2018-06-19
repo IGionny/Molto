@@ -10,16 +10,22 @@ namespace Molto.IntegrationTests.Abstractions
         protected abstract IDb MakeDb();
 
         [Fact]
-        public void Query_EmptySql()
+        public void Query()
         {
             //Arrange
             using (var db = MakeDb())
             {
+                var item = DataGenerator.WellKnownTest();
+                db.Insert(item);
+
                 //Act
                 var result = db.Query<Test>("");
 
                 //Assert
                 result.Should().NotBeEmpty();
+                var persistedItem = result.SingleOrDefault(x => x.Id == item.Id);
+                CompareTestItem(persistedItem, item);
+
             }
         }
 
@@ -29,12 +35,7 @@ namespace Molto.IntegrationTests.Abstractions
             //Arrange
             using (var db = MakeDb())
             {
-                var item = new Test();
-                item.Id = Guid.NewGuid();
-                item.Name = Guid.NewGuid().ToString();
-                item.Amount = 43434.43M;
-                item.CreatedAt = DateTime.UtcNow;
-                item.Eta = 43324234;
+                var item = DataGenerator.WellKnownTest();
                 db.Insert(item);
 
                 //Act
@@ -53,12 +54,8 @@ namespace Molto.IntegrationTests.Abstractions
             using (var db = MakeDb())
             {
                 var oldName = Guid.NewGuid();
-                var item = new Test();
-                item.Id = Guid.NewGuid();
+                var item = DataGenerator.WellKnownTest();
                 item.Name = oldName.ToString();
-                item.Amount = 43434.43M;
-                item.CreatedAt = DateTime.UtcNow;
-                item.Eta = 43324234;
                 db.Insert(item);
 
                 //Act
@@ -78,12 +75,7 @@ namespace Molto.IntegrationTests.Abstractions
             //Arrange
             using (var db = MakeDb())
             {
-                var item = new Test();
-                item.Id = Guid.NewGuid();
-                item.Name = Guid.NewGuid().ToString();
-                item.Amount = 43434.43M;
-                item.CreatedAt = DateTime.UtcNow;
-                item.Eta = 43324234;
+                var item = DataGenerator.WellKnownTest();
 
                 //Act
                 var result = db.Insert(item);
@@ -92,20 +84,25 @@ namespace Molto.IntegrationTests.Abstractions
                 result.Should().Be(1);
                 var resultQuery = db.Query<Test>("WHERE id = @0", item.Id).ToList();
                 resultQuery.Should().HaveCount(1);
-                resultQuery[0].Id.Should().Be(item.Id);
-                resultQuery[0].Name.Should().Be(item.Name);
-                resultQuery[0].Amount.Should().Be(item.Amount);
-                resultQuery[0].CreatedAt.Year.Should().Be(item.CreatedAt.Year);
-                resultQuery[0].CreatedAt.Month.Should().Be(item.CreatedAt.Month);
-                resultQuery[0].CreatedAt.Day.Should().Be(item.CreatedAt.Day);
-                resultQuery[0].CreatedAt.Hour.Should().Be(item.CreatedAt.Hour);
-                resultQuery[0].CreatedAt.Minute.Should().Be(item.CreatedAt.Minute);
-                resultQuery[0].CreatedAt.Second.Should().Be(item.CreatedAt.Second);
-                //resultQuery[0].CreatedAt.Millisecond.Should().Be(item.CreatedAt.Millisecond); //! this can be different
-                resultQuery[0].CreatedAt.Kind.Should().Be(item.CreatedAt.Kind); //! Mssql return Unspecified
-                resultQuery[0].Eta.Should().Be(item.Eta);
-
+                CompareTestItem(resultQuery[0], item);
             }
+        }
+
+        protected void CompareTestItem(Test item1, Test item2)
+        {
+            item1.Id.Should().Be(item2.Id);
+            item1.Name.Should().Be(item2.Name);
+            item1.Amount.Should().Be(item2.Amount);
+            item1.CreatedAt.Year.Should().Be(item2.CreatedAt.Year);
+            item1.CreatedAt.Month.Should().Be(item2.CreatedAt.Month);
+            item1.CreatedAt.Day.Should().Be(item2.CreatedAt.Day);
+            item1.CreatedAt.Hour.Should().Be(item2.CreatedAt.Hour);
+            item1.CreatedAt.Minute.Should().Be(item2.CreatedAt.Minute);
+            item1.CreatedAt.Second.Should().Be(item2.CreatedAt.Second);
+            //item1.CreatedAt.Millisecond.Should().Be(item2.CreatedAt.Millisecond); //! this can be different
+            item1.CreatedAt.Kind.Should().Be(item2.CreatedAt.Kind); //! Mssql return Unspecified
+            item1.Eta.Should().Be(item2.Eta);
+            item1.PrivacyAccepted.Should().Be(item2.PrivacyAccepted);
         }
     }
 }

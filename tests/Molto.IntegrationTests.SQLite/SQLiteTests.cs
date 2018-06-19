@@ -9,18 +9,18 @@ using Xunit;
 
 namespace Molto.IntegrationTests.SQLite
 {
-    public class SQLiteTests
+    public class SQLiteTests : BaseCrudTests
     {
 
-        private string _createTableTestSql = "CREATE TABLE test (id uniqueidentifier not null, name varchar(255), amount decimal(18,5), isvalid bit, eta bigint, createdat datetime); ";
-        private string _dropTableTestSql = "DROP TABLE test";
+        private string _createTableTestSql = "CREATE TABLE Test (id uniqueidentifier not null, name varchar(255), amount decimal(18,5), isvalid bit, eta bigint, createdat datetime); ";
+        private string _dropTableTestSql = "DROP TABLE IF EXISTS Test";
 
         public SQLiteTests()
         {
 
         }
 
-        protected IDb MakeDb()
+        protected override IDb MakeDb()
         {
 //            SQLiteConnection.CreateFile("MyDatabase.sqlite");
 
@@ -39,72 +39,6 @@ namespace Molto.IntegrationTests.SQLite
             return db;
         }
 
-        [Fact]
-        public void Query_CreateTable()
-        {
-            //Arrange
-            using (var db = MakeDb())
-            {
-                var resultDrop = db.Execute(_dropTableTestSql);
-
-                //Act
-                var resultCreate = db.Execute(_createTableTestSql);
-
-                //Assert
-                //do not throw
-            }
-        }
-
-        [Fact]
-        public void Query_EmptySql()
-        {
-            //Arrange
-            using (var db = MakeDb())
-            {
-
-                //Act
-                var result = db.Query<Test>("");
-
-                //Assert
-                result.Should().NotBeEmpty();
-            }
-        }
-
-        [Fact]
-        public void Insert()
-        {
-            //Arrange
-            using (var db = MakeDb())
-            {
-                var item = new Test();
-                item.Id = Guid.NewGuid();
-                item.Name = Guid.NewGuid().ToString();
-                item.Amount = 43434.43M;
-                item.CreatedAt = DateTime.UtcNow;
-                item.Eta = 43324234;
-
-                //Act
-                var result = db.Insert(item);
-
-                //Assert
-                result.Should().Be(1);
-                var resultQuery = db.Query<Test>("WHERE id = @0", item.Id).ToList();
-                resultQuery.Should().HaveCount(1);
-                resultQuery[0].Id.Should().Be(item.Id);
-                resultQuery[0].Name.Should().Be(item.Name);
-                resultQuery[0].Amount.Should().Be(item.Amount);
-                resultQuery[0].CreatedAt.Year.Should().Be(item.CreatedAt.Year);
-                resultQuery[0].CreatedAt.Month.Should().Be(item.CreatedAt.Month);
-                resultQuery[0].CreatedAt.Day.Should().Be(item.CreatedAt.Day);
-                resultQuery[0].CreatedAt.Hour.Should().Be(item.CreatedAt.Hour);
-                resultQuery[0].CreatedAt.Minute.Should().Be(item.CreatedAt.Minute);
-                resultQuery[0].CreatedAt.Second.Should().Be(item.CreatedAt.Second);
-                //resultQuery[0].CreatedAt.Millisecond.Should().Be(item.CreatedAt.Millisecond); //! this can be different
-                resultQuery[0].CreatedAt.Kind.Should().Be(item.CreatedAt.Kind); //! Mssql return Unspecified
-                resultQuery[0].Eta.Should().Be(item.Eta);
-
-            }
-        }
-
+        
     }
 }

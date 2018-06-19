@@ -141,7 +141,7 @@ namespace Molto
 
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("DELETE ");
+            sb.Append("DELETE FROM ");
             sb.Append(EscapeTableName(map.Table));
             sb.Append(" WHERE " + map.PrimaryKey.ColumnName + " = @0 ");
             return sb.ToString();

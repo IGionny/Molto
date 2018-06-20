@@ -19,5 +19,6 @@ namespace Molto.Abstractions
         object[] GetValues<T>(T item);
         IDictionary<EntityPropertyMap, object> GetColumnsValue<T>(T item);
         object GetPrimaryKeyValue<T>(T item);
+        string CountSql<T>(string sql);
     }
 }

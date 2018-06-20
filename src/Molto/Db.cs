@@ -175,6 +175,20 @@ namespace Molto
 
         public Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql, params object[] args)
         {
+            if (page < 1)
+            {
+                throw new ArgumentException($"{nameof(page)} can't be less than 1 (it's 1 base).");
+            }
+            if (itemsPerPage < 1)
+            {
+                throw new ArgumentException($"{nameof(itemsPerPage)} can't be less than 1.");
+            }
+
+            long offset = (page - 1) * itemsPerPage;
+
+            var countSql = _sqlQueryBuilder.CountSql<T>(sql);
+
+
             throw new NotImplementedException();
         }
     }

@@ -28,6 +28,13 @@ namespace Molto
             StringBuilder sb = new StringBuilder();
             sb.Append("SELECT ");
             sb.Append(GetFields<T>(map));
+            FromToWhereSql(sb, map, sql);
+
+            return sb.ToString();
+        }
+
+        protected void FromToWhereSql(StringBuilder sb, EntityMap map, string sql)
+        {
             sb.Append(" FROM ");
             sb.Append(EscapeTableName(map.Table));
             if (!string.IsNullOrWhiteSpace(sql))
@@ -43,8 +50,6 @@ namespace Molto
 
                 sb.Append(sql);
             }
-
-            return sb.ToString();
         }
 
         public string InsertSql<T>()
@@ -96,6 +101,23 @@ namespace Molto
             var result = map.PrimaryKey.Property.GetValue(item);
 
             return result;
+        }
+
+        public string CountSql<T>(string sql)
+        {
+            if (!sql.Trim().StartsWith("SELECT", StringComparison.InvariantCultureIgnoreCase))
+            {
+                var map = _entityDatabaseMapProvider.Get<T>();
+                StringBuilder sb = new StringBuilder();
+                sb.Append("SELECT COUNT(*) ");
+                FromToWhereSql(sb, map, sql);
+                return sb.ToString();
+            }
+
+            //Remove fields from Select to Form
+            //SELECT  name, eta, etc.. FROM table WHERE.. -> SELECT COUNT(*) FROM table WHERE..
+            //SELECT  name, (SELECT 1) FROM table WHERE.. -> SELECT COUNT(*) FROM table WHERE..
+            throw new NotImplementedException();
         }
 
         public object[] GetValues<T>(T item)

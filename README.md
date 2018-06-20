@@ -6,12 +6,12 @@ Molto is a new Micro-ORM for .Net Core inspired by the beautiful syntax of NPoco
 Tecnology goals
 ---------------
 
-1 .NET Core only
-1 Fully tested and testable
-1 Extensible by plugins and proper implementation
-1 Comprensible design
-1 Simple 
-1 Fast
+1. .NET Core only
+1. Fully tested and testable
+1. Extensible by plugins and proper implementation
+1. Comprensible design
+1. Simple 
+1. Fast
 
 Current tasks
 --------------
@@ -24,17 +24,30 @@ Current tasks
 	- [ ] Read 
 		[x] Query IList<T>
 		[ ] Paged result
-		[ ] ById
+		[ ] Single result
+		[ ] Single field (multiple rows)
 	- [x] Update
 	- [x] Delete
 - [ ] Execute commands
 	- [x] Execute commands with arguments
 	- [ ] Execute StoreProcedures
-- [ ] Multi database support 
+- [ ] Multi database support  (Dialect and Mapping)
 	- [ ] MsSql
 	- [ ] SqlLite
 	- [ ] Postgresql
 	- [ ] MySql (?)
+- [ ] Mapping Abilities
+	- [ ] field name
+	- [ ] table name
+	- [ ] readonly 
+	- [ ] ignore
+	- [ ] insert only (v2?)
+	- [ ] update only (v2?)
+- [ ] Mapping Strategies
+	- [ ] Assembly scanner
+	- [ ] Mapping By Attribute
+	- [ ] Mapping By Convention
+	- [ ] Mapping via Fluent
 - [ ] Null-Value support
 - [ ] Private fields
 - [ ] Composite Primary Key
@@ -46,7 +59,7 @@ Current tasks
 - [ ] Full Domain for tests
 - [ ] Implement transactions
 - [ ] Implement a DefaultFactory to simplify startup
-- [ ] Banchmark
+- [ ] Banchmark with BenchmarkDotNet
 
 
 

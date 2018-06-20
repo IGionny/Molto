@@ -103,6 +103,7 @@ namespace Molto.IntegrationTests.Abstractions
             item1.CreatedAt.Kind.Should().Be(item2.CreatedAt.Kind); //! Mssql return Unspecified
             item1.Eta.Should().Be(item2.Eta);
             item1.PrivacyAccepted.Should().Be(item2.PrivacyAccepted);
+            item1.Fruit.Should().Be(item2.Fruit);
         }
     }
 }

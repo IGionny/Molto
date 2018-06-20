@@ -4,7 +4,7 @@ using Molto.Abstractions;
 
 namespace Molto
 {
-    public partial class StrategiesDbValueConverter : IDbValueConverter
+    public class StrategiesDbValueConverter : IDbValueConverter
     {
         public void SetValue(IDbDataParameter parameter, object value)
         {

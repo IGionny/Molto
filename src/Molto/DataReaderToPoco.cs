@@ -25,6 +25,13 @@ namespace Molto
             //if is a primitive like 
             if (TypeUtils.IsPrimitive<T>())
             {
+                //From Int32 to Int64
+
+                if (typeof(T) == typeof(Int64) && reader[0] is int number)
+                {
+                    return (T)(object)(long)number;
+                }
+
                 return (T)reader[0];
             }
 

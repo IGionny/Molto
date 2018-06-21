@@ -19,6 +19,8 @@ namespace Molto
 
         int Delete<T>(T item);
 
+        long Count<T>(string sql = null);
+
         Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql, params object[] args);
     }
 
@@ -170,6 +172,13 @@ namespace Molto
             var sql = _sqlQueryBuilder.Delete<T>();
             object[] values = new object[1] {_sqlQueryBuilder.GetPrimaryKeyValue(item)};
             var result = Execute(sql, values);
+            return result;
+        }
+
+        public long Count<T>(string sql = null)
+        {
+            var countSql = _sqlQueryBuilder.CountSql<T>(sql);
+            var result = Query<long>(countSql).FirstOrDefault();
             return result;
         }
 

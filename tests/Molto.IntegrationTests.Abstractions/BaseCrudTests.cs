@@ -88,6 +88,23 @@ namespace Molto.IntegrationTests.Abstractions
             }
         }
 
+        [Fact]
+        public void Count()
+        {
+            //Arrange
+            using (var db = MakeDb())
+            {
+                var item = DataGenerator.WellKnownTest();
+                db.Insert(item);
+
+                //Act
+                var result = db.Count<Test>();
+
+                //Assert
+                result.Should().BeGreaterOrEqualTo(1);
+            }
+        }
+
         protected void CompareTestItem(Test item1, Test item2)
         {
             item1.Id.Should().Be(item2.Id);

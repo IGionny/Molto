@@ -2,6 +2,8 @@
 {
     public interface ISqlQueryCutter
     {
+        string TrimSelectStart(string sql);
+
         string Fields(string sql);
 
         string From(string sql);

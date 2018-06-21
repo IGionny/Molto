@@ -10,20 +10,22 @@ namespace Molto
     public class SqlQueryBuilder : ISqlQueryBuilder
     {
         private readonly IEntityDatabaseMapProvider _entityDatabaseMapProvider;
+        private readonly ISqlQueryCutter _sqlQueryCutter;
 
-        public SqlQueryBuilder(IEntityDatabaseMapProvider entityDatabaseMapProvider)
+        public SqlQueryBuilder(IEntityDatabaseMapProvider entityDatabaseMapProvider, ISqlQueryCutter sqlQueryCutter)
         {
             _entityDatabaseMapProvider = entityDatabaseMapProvider ?? throw new ArgumentNullException(nameof(entityDatabaseMapProvider));
+            _sqlQueryCutter = sqlQueryCutter ?? throw new ArgumentNullException(nameof(sqlQueryCutter));
         }
 
         public string SelectSql<T>(string sql)
         {
-            var map = _entityDatabaseMapProvider.Get<T>();
-
-            if (sql.Trim().StartsWith("SELECT", StringComparison.InvariantCultureIgnoreCase))
+            if (sql.Trim().StartsWith(Sql.Select, StringComparison.InvariantCultureIgnoreCase))
             {
                 return sql;
             }
+
+            var map = _entityDatabaseMapProvider.Get<T>();
 
             StringBuilder sb = new StringBuilder();
             sb.Append("SELECT ");
@@ -105,7 +107,7 @@ namespace Molto
 
         public string CountSql<T>(string sql)
         {
-            if (!sql.Trim().StartsWith("SELECT", StringComparison.InvariantCultureIgnoreCase))
+            if (string.IsNullOrWhiteSpace(sql) || !sql.Trim().StartsWith("SELECT", StringComparison.InvariantCultureIgnoreCase))
             {
                 var map = _entityDatabaseMapProvider.Get<T>();
                 StringBuilder sb = new StringBuilder();
@@ -117,7 +119,9 @@ namespace Molto
             //Remove fields from Select to Form
             //SELECT  name, eta, etc.. FROM table WHERE.. -> SELECT COUNT(*) FROM table WHERE..
             //SELECT  name, (SELECT 1) FROM table WHERE.. -> SELECT COUNT(*) FROM table WHERE..
-            throw new NotImplementedException();
+            var query = _sqlQueryCutter.TrimSelectStart(sql);
+            var result = "SELECT COUNT(*) " + query;
+            return result;
         }
 
         public object[] GetValues<T>(T item)

@@ -26,6 +26,7 @@ Current tasks
 		[ ] Paged result
 		[ ] Single result
 		[ ] Single field (multiple rows)
+		[x] Count
 	- [x] Update
 	- [x] Delete
 - [ ] Execute commands

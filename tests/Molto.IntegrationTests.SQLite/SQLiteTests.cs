@@ -31,7 +31,8 @@ namespace Molto.IntegrationTests.SQLite
             IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider();
             IDataReaderToPoco dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
             entityDatabaseMapProvider.AddMap<Test>();
-            ISqlQueryBuilder sqlQueryBuilder = new SqlQueryBuilder(entityDatabaseMapProvider);
+            ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();
+            ISqlQueryBuilder sqlQueryBuilder = new SqlQueryBuilder(entityDatabaseMapProvider, sqlQueryCutter);
             var db = new Db(dbConnectionProvider, dbValueConverter, dataReaderToPoco, sqlQueryBuilder);
 
             db.Execute(_createTableTestSql);

@@ -7,7 +7,19 @@ namespace Molto.IntegrationTests.MsSql2014
     public class MsSql2014Tests : BaseCrudTests
     {
         private string _createTableSql =
-            "CREATE TABLE [dbo].[Test](\r\n\t[Id] [uniqueidentifier] NOT NULL,\r\n\t[Name] [nvarchar](255) NOT NULL,\r\n\t[Amount] [decimal](19, 5) NOT NULL,\r\n\t[IsValid] [bit] NOT NULL,\r\n\t[Eta] [bigint] NOT NULL,\r\n\t[CreatedAt] [datetime] NOT NULL,\r\n\t[PrivacyAccepted] [bit] NULL,\r\n\t[Discount] [decimal](19, 5) NULL,\r\n\t[Employees] [bigint] NULL,\r\n\t[ConfirmedAt] [datetime] NULL,\r\n CONSTRAINT [PK_Test] PRIMARY KEY CLUSTERED \r\n(\r\n\t[Id] ASC\r\n)";
+            @"CREATE TABLE [Test](
+                [Id] [uniqueidentifier] NOT NULL,
+                [Name] [nvarchar](255) NOT NULL,
+                [Amount] [decimal](19, 5) NOT NULL,
+                [IsValid] [bit] NOT NULL,
+                [Eta] [bigint] NOT NULL,
+                [CreatedAt] [datetime] NOT NULL,
+                [PrivacyAccepted] [bit] NULL,
+                [Discount] [decimal](19, 5) NULL,
+                [Employees] [bigint] NULL,
+                [ConfirmedAt] [datetime] NULL,
+                [Fruit] [smallint] NULL,
+                CONSTRAINT [PK_Test] PRIMARY KEY CLUSTERED ([Id] ASC)";
 
         protected override IDb MakeDb()
         {

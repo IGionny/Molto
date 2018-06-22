@@ -12,7 +12,20 @@ namespace Molto.IntegrationTests.SQLite
     public class SQLiteTests : BaseCrudTests
     {
 
-        private string _createTableTestSql = "CREATE TABLE Test (id uniqueidentifier not null, name varchar(255), amount decimal(18,5), isvalid bit, eta bigint, createdat datetime); ";
+        private string _createTableTestSql = @"CREATE TABLE Test 
+                            (id uniqueidentifier not null,
+                            name varchar(255),
+                            amount decimal(19,5),
+                            isvalid bit,
+                            eta bigint,
+                            createdat datetime,
+                            privacyaccepted bit NULL,
+                            discount decimal(19,5) NULL,
+                            employees bigint NULL,
+                            confirmedat datetime null,
+                            fruit smallint null
+                            ); ";
+
         private string _dropTableTestSql = "DROP TABLE IF EXISTS Test";
 
         public SQLiteTests()

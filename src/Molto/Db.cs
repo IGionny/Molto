@@ -19,9 +19,9 @@ namespace Molto
 
         int Delete<T>(T item);
 
-        long Count<T>(string sql = null);
+        long Count<T>(string sql = null, params object[] args);
 
-        Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql, params object[] args);
+        Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql = null, params object[] args);
     }
 
     public class Db : IDb
@@ -175,14 +175,14 @@ namespace Molto
             return result;
         }
 
-        public long Count<T>(string sql = null)
+        public long Count<T>(string sql = null, params object[] args)
         {
             var countSql = _sqlQueryBuilder.CountSql<T>(sql);
-            var result = Query<long>(countSql).FirstOrDefault();
+            var result = Query<long>(countSql, args).FirstOrDefault();
             return result;
         }
 
-        public Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql, params object[] args)
+        public async Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql = null, params object[] args)
         {
             if (page < 1)
             {
@@ -193,12 +193,21 @@ namespace Molto
                 throw new ArgumentException($"{nameof(itemsPerPage)} can't be less than 1.");
             }
 
-            long offset = (page - 1) * itemsPerPage;
+            var result = new Page<T>();
 
-            var countSql = _sqlQueryBuilder.CountSql<T>(sql);
+            result.TotalItems = Count<T>(sql, args);
+            long skip = (page - 1) * itemsPerPage;
 
+            var pagedSql = sql + $" LIMIT {itemsPerPage} OFFSET {skip} ";
+            result.Items = Query<T>(pagedSql).ToList();
+            result.CurrentPage = page;
+            result.ItemsPerPage = itemsPerPage;
+            result.TotalItems = Count<T>(sql, args);
+            result.TotalPages = result.TotalItems / itemsPerPage;
+            if ((result.TotalItems % itemsPerPage) != 0)
+                result.TotalPages++;
 
-            throw new NotImplementedException();
+            return result;
         }
     }
 }

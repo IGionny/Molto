@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
@@ -102,6 +103,32 @@ namespace Molto.IntegrationTests.Abstractions
 
                 //Assert
                 result.Should().BeGreaterOrEqualTo(1);
+            }
+        }
+
+        [Fact]
+        public async Task Paged()
+        {
+            //Arrange
+            using (var db = MakeDb())
+            {
+                var items = new Test[10];
+                for (var i = 0; i < 10; i++)
+                {
+                    var item = DataGenerator.WellKnownTest();
+                    db.Insert(item);
+                    items.Append(item);
+                }
+                
+                //Act
+                var result = await db.PageAsync<Test>(1, 5).ConfigureAwait(false);
+
+                //Assert
+                result.TotalItems.Should().Be(10);
+                result.Items.Should().HaveCount(5);
+                result.CurrentPage.Should().Be(1);
+                result.ItemsPerPage.Should().Be(5);
+                result.TotalPages.Should().Be(2);
             }
         }
 

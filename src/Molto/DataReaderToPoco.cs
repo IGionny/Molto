@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Data;
 using System.Linq;
-using System.Runtime.InteropServices;
 using Molto.Abstractions;
 using Molto.Utilities;
 
@@ -49,7 +47,14 @@ namespace Molto
             for (var i = 0; i < reader.FieldCount; i++)
             {
                 var name = reader.GetName(i);
-                var prop = map.Properties.SingleOrDefault(x => string.Equals(x.ColumnName, name, StringComparison.InvariantCultureIgnoreCase));
+                var lname = name.ToLower();
+                if (!map.Properties.ContainsKey(lname))
+                {
+                    //A field that is not present as property
+                    continue;
+                }
+
+                var prop = map.Properties[lname];
                 if (prop == null)
                 {
                     continue;

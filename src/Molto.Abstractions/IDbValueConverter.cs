@@ -23,7 +23,8 @@ namespace Molto.Abstractions
     {
         public EntityMap()
         {
-            Properties = new List<EntityPropertyMap>();
+            //The dictionary key is case sensitive: for faster search the convention here is to have always the key in lowercase
+            Properties = new Dictionary<string, EntityPropertyMap>(); 
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace Molto.Abstractions
         /// <summary>
         /// The list of Properties/Columns/Converter
         /// </summary>
-        public IList<EntityPropertyMap> Properties { get; set; }
+        public IDictionary<string, EntityPropertyMap> Properties { get; set; }
 
         public object CreateInstance()
         {
@@ -54,7 +55,7 @@ namespace Molto.Abstractions
             {
                 if (_primaryKey == null)
                 {
-                    _primaryKey = Properties.FirstOrDefault(x => x.IsPrimaryKey);
+                    _primaryKey = Properties.FirstOrDefault(x => x.Value.IsPrimaryKey).Value;
                 }
 
                 return _primaryKey;

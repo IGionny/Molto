@@ -36,12 +36,14 @@ namespace Molto
             foreach (var prop in type.GetProperties())
             {
                 //Convention: the primary key name is always 'Id'
+                //todo: add mapping logic customizable
                 bool isPrimaryKey = string.Equals(prop.Name, "Id", StringComparison.InvariantCultureIgnoreCase);
-                result.Properties.Add(new EntityPropertyMap
+                var columName = prop.Name;
+                result.Properties.Add(columName.ToLower(), new EntityPropertyMap
                 {
                     IsPrimaryKey = isPrimaryKey,
                     Property = prop,
-                    ColumnName = prop.Name
+                    ColumnName = columName
                 });
             }
 

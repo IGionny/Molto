@@ -58,7 +58,7 @@ namespace Molto
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 
-            IList<string> columns = map.Properties.Select(x => x.ColumnName).ToList();
+            IList<string> columns = map.Properties.Keys.ToList();
 
             StringBuilder sb = new StringBuilder();
 
@@ -84,8 +84,8 @@ namespace Molto
             var result = new Dictionary<EntityPropertyMap, object>(map.Properties.Count);
             foreach (var property in map.Properties)
             {
-                var value = property.Property.GetValue(item);
-                result.Add(property, value);
+                var value = property.Value.Property.GetValue(item);
+                result.Add(property.Value, value);
             }
 
             return result;
@@ -130,7 +130,7 @@ namespace Molto
             IList<object> result = new List<object>(map.Properties.Count);
             foreach (var property in map.Properties)
             {
-                var value = property.Property.GetValue(item);
+                var value = property.Value.Property.GetValue(item);
                 result.Add(value);
             }
 
@@ -149,7 +149,7 @@ namespace Molto
 
             IList<string> columns = new List<string>(map.Properties.Count -1);
             int i = 0;
-            foreach (var propertyMap in map.Properties.Where(x => !x.IsPrimaryKey))
+            foreach (var propertyMap in map.Properties.Values.Where(x => !x.IsPrimaryKey))
             {
                 columns.Add(propertyMap.ColumnName + " = @" + i + " ");
                 i++;
@@ -175,7 +175,7 @@ namespace Molto
 
         public string GetFields<T>(EntityMap map)
         {
-            IList<string> columns = map.Properties.Select(x => x.ColumnName).ToList();
+            IList<string> columns = map.Properties.Values.Select(x => x.ColumnName).ToList();
 
             return string.Join(",", columns);
         }

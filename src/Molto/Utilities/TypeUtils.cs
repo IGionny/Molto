@@ -14,7 +14,12 @@ namespace Molto.Utilities
         public static bool IsPrimitive<T>()
         {
             var t = typeof(T);
-            if (t.IsPrimitive || t == typeof(Decimal) || t == typeof(String))
+            return IsPrimitive(t);
+        }
+
+        public static bool IsPrimitive(Type type)
+        {
+            if (type.IsPrimitive || type == typeof(Decimal) || type == typeof(String))
             {
                 return true;
             }
@@ -22,5 +27,20 @@ namespace Molto.Utilities
             return false;
         }
 
+
+        public static Type RevealType<T>()
+        {
+            return RevealType(typeof(T));
+        }
+
+        public static Type RevealType(Type type)
+        {
+            if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
+                return Nullable.GetUnderlyingType(type);
+            }
+
+            return type;
+        }
     }
 }

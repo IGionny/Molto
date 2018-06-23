@@ -22,19 +22,19 @@ Current tasks
 	    - [x] Insert all fields
 		- [ ] Insert and return Database Identity
 	- [ ] Read 
-		[x] Query IList<T>
-		[ ] Paged result
-		[ ] Single result
-		[ ] Single field (multiple rows)
-		[x] Count
+		- [x] Query IList<T>
+		- [ ] Paged result
+		- [ ] Single result
+		- [ ] Single field (multiple rows)
+		- [x] Count
 	- [x] Update
 	- [x] Delete
 - [ ] Execute commands
 	- [x] Execute commands with arguments
 	- [ ] Execute StoreProcedures
 - [ ] Multi database support  (Dialect and Mapping)
-	- [ ] MsSql
-	- [ ] SqlLite
+	- [x] MsSql
+	- [x] SqlLite
 	- [ ] Postgresql
 	- [ ] MySql (?)
 - [ ] Mapping Abilities
@@ -59,11 +59,14 @@ Current tasks
 - [ ] Commons to simplify tests
 - [ ] Full Domain for tests
 - [ ] Implement transactions
+- [ ] Timeout on command
 - [ ] Implement a DefaultFactory to simplify startup
-- [ ] Banchmark with BenchmarkDotNet
+- [x] Banchmark with BenchmarkDotNet
 
 
-
+Next:
+- [ ] Dynamic support
+- [ ] Named parameters
 
 
 Fun fact

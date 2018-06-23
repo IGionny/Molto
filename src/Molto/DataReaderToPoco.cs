@@ -22,8 +22,11 @@ namespace Molto
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
 
+
+            var type = TypeUtils.RevealType<T>();
+
             //if is a primitive like 
-            if (TypeUtils.IsPrimitive<T>())
+            if (TypeUtils.IsPrimitive(type))
             {
                 //From Int32 to Int64
 

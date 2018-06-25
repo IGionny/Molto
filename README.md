@@ -25,7 +25,7 @@ Current tasks
 		- [x] Query IList<T>
 		- [ ] Paged result
 		- [ ] Single result
-		- [ ] Single field (multiple rows)
+		- [x] Single field (multiple rows) - Db.Query<string>("SELECT name from TEST")
 		- [x] Count
 	- [x] Update
 	- [x] Delete

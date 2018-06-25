@@ -128,14 +128,26 @@ namespace Molto
 
         }
 
+        protected IDataReader GetReader(IDbCommand command)
+        {
+            try
+            {
+               return command.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                throw new MoltoSqlException(command, ex);
+            }
+        }
 
         public IEnumerable<T> Query<T>(string sql, params object[] args)
         {
             sql = _sqlQueryBuilder.SelectSql<T>(sql);
             using (IDbCommand cmd = CreateCommand(sql, args))
             {
-                using (IDataReader r = cmd.ExecuteReader())
+                using (var r = GetReader(cmd))
                 {
+
                     while (true)
                     {
                         if (!r.Read()) yield break;
@@ -149,7 +161,7 @@ namespace Molto
         public int Insert<T>(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            var sql =_sqlQueryBuilder.InsertSql<T>();
+            var sql = _sqlQueryBuilder.InsertSql<T>();
             object[] values = _sqlQueryBuilder.GetValues<T>(item);
             var result = Execute(sql, values);
             return result;
@@ -170,7 +182,7 @@ namespace Molto
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             var sql = _sqlQueryBuilder.Delete<T>();
-            object[] values = new object[1] {_sqlQueryBuilder.GetPrimaryKeyValue(item)};
+            object[] values = new object[1] { _sqlQueryBuilder.GetPrimaryKeyValue(item) };
             var result = Execute(sql, values);
             return result;
         }

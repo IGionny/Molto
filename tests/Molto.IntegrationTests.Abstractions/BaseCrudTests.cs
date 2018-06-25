@@ -31,6 +31,24 @@ namespace Molto.IntegrationTests.Abstractions
         }
 
         [Fact]
+        public void Query_SingleField()
+        {
+            //Arrange
+            using (var db = MakeDb())
+            {
+                var item = DataGenerator.WellKnownTest();
+                db.Insert(item);
+
+                //Act
+                var result = db.Query<string>("SELECT name from Test");
+
+                //Assert
+                result.Should().NotBeEmpty();
+                result.Should().Contain(item.Name);
+            }
+        }
+
+        [Fact]
         public void Delete()
         {
             //Arrange

@@ -32,7 +32,7 @@ namespace Molto.IntegrationTests.MsSql2014
             IDataReaderToPoco dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
             entityDatabaseMapProvider.AddMap<Test>();
             ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();
-            ISqlQueryBuilder sqlQueryBuilder = new SqlQueryBuilder(entityDatabaseMapProvider, sqlQueryCutter);
+            ISqlQueryBuilder sqlQueryBuilder = new MsSql2014SqlQueryBuilder(entityDatabaseMapProvider, sqlQueryCutter);
             var db = new Db(dbConnectionProvider, dbValueConverter, dataReaderToPoco, sqlQueryBuilder);
             return db;
         }

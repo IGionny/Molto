@@ -8,7 +8,7 @@
 
         public const string Where = "WHERE";
 
-        public const string Order = "ORDER";
+        public const string Order = "ORDER BY";
 
         public const string CountStar = "COUNT(*)";
     }

@@ -208,10 +208,9 @@ namespace Molto
             var result = new Page<T>();
 
             result.TotalItems = Count<T>(sql, args);
-            long skip = (page - 1) * itemsPerPage;
-
-            var pagedSql = sql + $" LIMIT {itemsPerPage} OFFSET {skip} ";
-            result.Items = Query<T>(pagedSql).ToList();
+            var selectSql = _sqlQueryBuilder.SelectSql<T>(sql);
+            var pageSql = _sqlQueryBuilder.PageSql<T>(selectSql, page, itemsPerPage, result.TotalItems);
+            result.Items = Query<T>(pageSql).ToList();
             result.CurrentPage = page;
             result.ItemsPerPage = itemsPerPage;
             result.TotalItems = Count<T>(sql, args);

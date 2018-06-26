@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Molto.Abstractions\Molto.Abstractions.csproj" />
+    <ProjectReference Include="..\Molto\Molto.csproj" />
   </ItemGroup>
 
 </Project>

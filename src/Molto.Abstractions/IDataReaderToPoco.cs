@@ -20,5 +20,6 @@ namespace Molto.Abstractions
         IDictionary<EntityPropertyMap, object> GetColumnsValue<T>(T item);
         object GetPrimaryKeyValue<T>(T item);
         string CountSql<T>(string sql);
+        string PageSql<T>(string sql, long page, long itemsPerPage, long resultTotalItems);
     }
 }

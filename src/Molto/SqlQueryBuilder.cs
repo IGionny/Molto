@@ -18,9 +18,9 @@ namespace Molto
             _sqlQueryCutter = sqlQueryCutter ?? throw new ArgumentNullException(nameof(sqlQueryCutter));
         }
 
-        public string SelectSql<T>(string sql)
+        public virtual string SelectSql<T>(string sql)
         {
-            if (sql.Trim().StartsWith(Sql.Select, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(sql) && sql.Trim().StartsWith(Sql.Select, StringComparison.InvariantCultureIgnoreCase))
             {
                 return sql;
             }
@@ -35,26 +35,30 @@ namespace Molto
             return sb.ToString();
         }
 
-        protected void FromToWhereSql(StringBuilder sb, EntityMap map, string sql)
+        protected virtual  void FromToWhereSql(StringBuilder sb, EntityMap map, string sql)
         {
             sb.Append(" FROM ");
             sb.Append(EscapeTableName(map.Table));
             if (!string.IsNullOrWhiteSpace(sql))
             {
-                if (sql.StartsWith("WHERE", StringComparison.InvariantCulture))
+                if (sql.StartsWith(Sql.Where, StringComparison.InvariantCulture))
                 {
                     sb.Append(" ");
                 }
-                else
+                else if (!sql.StartsWith(Sql.Order, StringComparison.InvariantCultureIgnoreCase))
                 {
                     sb.Append(" WHERE ");
                 }
 
+                if (!sql.StartsWith(" "))
+                {
+                    sb.Append(" ");
+                }
                 sb.Append(sql);
             }
         }
 
-        public string InsertSql<T>()
+        public virtual  string InsertSql<T>()
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 
@@ -78,7 +82,7 @@ namespace Molto
 
         }
 
-        public IDictionary<EntityPropertyMap, object> GetColumnsValue<T>(T item)
+        public virtual  IDictionary<EntityPropertyMap, object> GetColumnsValue<T>(T item)
         {
             var map = _entityDatabaseMapProvider.Get<T>();
             var result = new Dictionary<EntityPropertyMap, object>(map.Properties.Count);
@@ -91,7 +95,7 @@ namespace Molto
             return result;
         }
 
-        public object GetPrimaryKeyValue<T>(T item)
+        public virtual object GetPrimaryKeyValue<T>(T item)
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 
@@ -105,8 +109,15 @@ namespace Molto
             return result;
         }
 
-        public string CountSql<T>(string sql)
+        public virtual string CountSql<T>(string sql)
         {
+            //remove "Order by" from the Count query
+            if (!string.IsNullOrWhiteSpace(sql) &&
+                sql.Trim().StartsWith(Sql.Order, StringComparison.InvariantCultureIgnoreCase))
+            {
+                sql = null;
+            }
+
             if (string.IsNullOrWhiteSpace(sql) || !sql.Trim().StartsWith("SELECT", StringComparison.InvariantCultureIgnoreCase))
             {
                 var map = _entityDatabaseMapProvider.Get<T>();
@@ -124,7 +135,14 @@ namespace Molto
             return result;
         }
 
-        public object[] GetValues<T>(T item)
+        public virtual  string PageSql<T>(string sql, long page, long itemsPerPage, long resultTotalItems)
+        {
+            long skip = (page - 1) * itemsPerPage;
+            sql = sql + $" LIMIT {itemsPerPage} OFFSET {skip} ";
+            return sql;
+        }
+
+        public virtual object[] GetValues<T>(T item)
         {
             var map = _entityDatabaseMapProvider.Get<T>();
             IList<object> result = new List<object>(map.Properties.Count);
@@ -137,7 +155,7 @@ namespace Molto
             return result.ToArray();
         }
 
-        public string UpdateSql<T>()
+        public virtual string UpdateSql<T>()
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 
@@ -161,7 +179,7 @@ namespace Molto
             return sb.ToString();
         }
 
-        public string Delete<T>()
+        public virtual  string Delete<T>()
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 
@@ -173,17 +191,19 @@ namespace Molto
             return sb.ToString();
         }
 
-        public string GetFields<T>(EntityMap map)
+        public virtual string GetFields<T>(EntityMap map)
         {
             IList<string> columns = map.Properties.Values.Select(x => x.ColumnName).ToList();
 
             return string.Join(",", columns);
         }
 
-        public string EscapeTableName(string table)
+        public virtual string EscapeTableName(string table)
         {
             return table;
         }
+
+        public virtual string[] ReservedWords => new string[0];
 
     }
 }

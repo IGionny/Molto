@@ -1,21 +1,21 @@
 ﻿using System.Data;
-using System.Data.SQLite;
 using Molto.Abstractions;
+using Npgsql;
 
-namespace Molto.SQLite
+namespace Molto.PostgreSql
 {
-    public class SQLiteConnectionMaker : IDbConnectionMaker
+    public class PostgreSqlConnectionMaker : IDbConnectionMaker
     {
         private readonly string _connectionString;
 
-        public SQLiteConnectionMaker(string connectionString)
+        public PostgreSqlConnectionMaker(string connectionString)
         {
             _connectionString = connectionString;
         }
 
         public IDbConnection NewConnection()
         {
-            SQLiteConnection conn = new SQLiteConnection(_connectionString);
+            var conn = new NpgsqlConnection(_connectionString);
             return conn;
         }
     }

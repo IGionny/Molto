@@ -22,8 +22,8 @@ Current tasks
 	    - [x] Insert all fields
 		- [ ] Insert and return Database Identity
 	- [ ] Read 
-		- [x] Query IList<T>
-		- [ ] Paged result
+		- [x] Query IList<T> - Db.Query<Test>()
+		- [x] Paged result - Db.PageAsync<Test>(1, 5, "ORDER BY Id")
 		- [ ] Single result
 		- [x] Single field (multiple rows) - Db.Query<string>("SELECT name from TEST")
 		- [x] Count
@@ -62,7 +62,7 @@ Current tasks
 - [ ] Timeout on command
 - [ ] Implement a DefaultFactory to simplify startup
 - [x] Banchmark with BenchmarkDotNet
-
+- [ ] Log via MS interface ILogger
 
 Next:
 - [ ] Dynamic support

@@ -99,7 +99,7 @@ namespace Molto.MsSql2014
 
         public override string PageSql<T>(string sql, long page, long itemsPerPage, long resultTotalItems)
         {
-            if (!sql.Contains("ORDER BY", StringComparison.InvariantCultureIgnoreCase))
+            if (!sql.ToUpper().Contains("ORDER BY"))
                 throw new Exception("SQL Server 2012 Paging via OFFSET requires an ORDER BY statement.");
 
             var skip = (page - 1) * itemsPerPage;

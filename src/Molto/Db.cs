@@ -21,7 +21,7 @@ namespace Molto
 
         long Count<T>(string sql = null, params object[] args);
 
-        Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql = null, params object[] args);
+        Page<T> Page<T>(long page, long itemsPerPage, string sql = null, params object[] args);
     }
 
     public class Db : IDb
@@ -130,13 +130,14 @@ namespace Molto
 
         protected IDataReader GetReader(IDbCommand command)
         {
+            string commandText = command.CommandText;
             try
             {
                return command.ExecuteReader();
             }
             catch (Exception ex)
             {
-                throw new MoltoSqlException(command, ex);
+                throw new MoltoSqlException(commandText, ex);
             }
         }
 
@@ -194,7 +195,7 @@ namespace Molto
             return result;
         }
 
-        public async Task<Page<T>> PageAsync<T>(long page, long itemsPerPage, string sql = null, params object[] args)
+        public Page<T> Page<T>(long page, long itemsPerPage, string sql = null, params object[] args)
         {
             if (page < 1)
             {

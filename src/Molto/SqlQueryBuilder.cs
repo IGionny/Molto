@@ -135,7 +135,7 @@ namespace Molto
             return result;
         }
 
-        public virtual  string PageSql<T>(string sql, long page, long itemsPerPage, long resultTotalItems)
+        public virtual string PageSql<T>(string sql, long page, long itemsPerPage, long resultTotalItems)
         {
             long skip = (page - 1) * itemsPerPage;
             sql = sql + $" LIMIT {itemsPerPage} OFFSET {skip} ";
@@ -148,11 +148,15 @@ namespace Molto
             IList<object> result = new List<object>(map.Properties.Count);
             foreach (var property in map.Properties)
             {
-                var value = property.Value.Property.GetValue(item);
-                result.Add(value);
+                result.Add(GetPropertyValue(property.Value, item));
             }
 
             return result.ToArray();
+        }
+
+        protected virtual object GetPropertyValue<T>(EntityPropertyMap property, T item)
+        {
+            return property.Property.GetValue(item);
         }
 
         public virtual string UpdateSql<T>()

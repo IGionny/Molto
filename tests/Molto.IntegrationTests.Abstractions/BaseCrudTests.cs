@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
@@ -125,7 +124,7 @@ namespace Molto.IntegrationTests.Abstractions
         }
 
         [Fact]
-        public async Task Paged()
+        public void Paged()
         {
             //Arrange
             using (var db = MakeDb())
@@ -139,7 +138,7 @@ namespace Molto.IntegrationTests.Abstractions
                 }
                 
                 //Act
-                var result = await db.PageAsync<Test>(1, 5, "ORDER BY Id").ConfigureAwait(false);
+                var result = db.Page<Test>(1, 5, "ORDER BY Id");
 
                 //Assert
                 result.TotalItems.Should().BeGreaterOrEqualTo(10);

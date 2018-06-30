@@ -26,7 +26,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Docs", "Docs", "{5DB6AED7-A
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.Tests.Benchmark", "tests\Molto.Tests.Benchmark\Molto.Tests.Benchmark.csproj", "{22B4B6EA-41B1-4FB3-90C9-87FE7150EE81}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.Tests.Benchmark", "tests\Molto.Tests.Benchmark\Molto.Tests.Benchmark.csproj", "{22B4B6EA-41B1-4FB3-90C9-87FE7150EE81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.PostgreSql", "src\Molto.PostgreSql\Molto.PostgreSql.csproj", "{2CAB8B4F-C35A-47FC-9BA1-9FC3876173CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.IntegrationTests.PostgreSql", "tests\Molto.IntegrationTests.PostgreSql\Molto.IntegrationTests.PostgreSql.csproj", "{C98AADB5-BD92-4FE0-899E-40601E6D55FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,6 +74,14 @@ Global
 		{22B4B6EA-41B1-4FB3-90C9-87FE7150EE81}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22B4B6EA-41B1-4FB3-90C9-87FE7150EE81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22B4B6EA-41B1-4FB3-90C9-87FE7150EE81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CAB8B4F-C35A-47FC-9BA1-9FC3876173CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CAB8B4F-C35A-47FC-9BA1-9FC3876173CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CAB8B4F-C35A-47FC-9BA1-9FC3876173CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CAB8B4F-C35A-47FC-9BA1-9FC3876173CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C98AADB5-BD92-4FE0-899E-40601E6D55FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C98AADB5-BD92-4FE0-899E-40601E6D55FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C98AADB5-BD92-4FE0-899E-40601E6D55FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C98AADB5-BD92-4FE0-899E-40601E6D55FD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +92,7 @@ Global
 		{19076392-C30B-4AE0-8E55-89BE29097552} = {28248998-1CBF-4779-8C58-179D4A376A4B}
 		{9F05AE6C-E3A4-4C60-8496-7229C5390396} = {28248998-1CBF-4779-8C58-179D4A376A4B}
 		{22B4B6EA-41B1-4FB3-90C9-87FE7150EE81} = {28248998-1CBF-4779-8C58-179D4A376A4B}
+		{C98AADB5-BD92-4FE0-899E-40601E6D55FD} = {28248998-1CBF-4779-8C58-179D4A376A4B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {303C6E0C-DB4E-4393-B5CE-2B5598CA1837}

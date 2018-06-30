@@ -1,0 +1,1 @@
+dotnet ../tests/Molto.Tests.Benchmark/bin/Release/netcoreapp2.1/Molto.Tests.Benchmark.dll --all

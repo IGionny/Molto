@@ -14,6 +14,8 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Molto\Molto.csproj" />
+    <ProjectReference Include="..\Molto.IntegrationTests.Abstractions\Molto.IntegrationTests.Abstractions.csproj" />
+    <ProjectReference Include="..\Molto.IntegrationTests.MsSql2014\Molto.IntegrationTests.MsSql2014.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />

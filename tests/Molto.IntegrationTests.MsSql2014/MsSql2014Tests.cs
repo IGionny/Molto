@@ -4,6 +4,32 @@ using Molto.MsSql2014;
 
 namespace Molto.IntegrationTests.MsSql2014
 {
+    public class MsSql2014Factory
+    {
+        private readonly IDbConnectionProvider _dbConnectionProvider;
+        private readonly IDbValueConverter _dbValueConverter;
+        private readonly IDataReaderToPoco _dataReaderToPoco;
+        private readonly ISqlQueryBuilder _sqlQueryBuilder;
+
+        public MsSql2014Factory(string connectionString)
+        {
+            _dbConnectionProvider = new InMemoryDbConnectionProvider();
+            _dbConnectionProvider.AddConnectionFactory("default", new MsSql2014ConnectionMaker(connectionString));
+            _dbValueConverter = new StrategiesDbValueConverter();
+            IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider();
+            _dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
+            entityDatabaseMapProvider.AddMap<Test>();
+            ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();
+            _sqlQueryBuilder = new MsSql2014SqlQueryBuilder(entityDatabaseMapProvider, sqlQueryCutter);
+        }
+
+        public IDb Db()
+        {
+            var db = new Db(_dbConnectionProvider, _dbValueConverter, _dataReaderToPoco, _sqlQueryBuilder);
+            return db;
+        }
+    }
+
     public class MsSql2014Tests : BaseCrudTests
     {
         private string _createTableSql =
@@ -21,20 +47,25 @@ namespace Molto.IntegrationTests.MsSql2014
                 [Fruit] [smallint] NULL,
                 CONSTRAINT [PK_Test] PRIMARY KEY CLUSTERED ([Id] ASC)";
 
+        private MsSql2014Factory _factory;
+
+        public MsSql2014Factory Factory
+        {
+            get
+            {
+                if (_factory == null)
+                {
+                    _factory = new MsSql2014Factory("Data Source=.\\;Initial Catalog=tests;User Id=test;Password=test;Trusted_Connection=False;");
+                }
+
+                return _factory;
+            }
+        }
+
+
         protected override IDb MakeDb()
         {
-            var connectionString =
-                "Data Source=.\\;Initial Catalog=tests;User Id=test;Password=test;Trusted_Connection=False;";
-            IDbConnectionProvider dbConnectionProvider = new InMemoryDbConnectionProvider();
-            dbConnectionProvider.AddConnectionFactory("default", new MsSql2014ConnectionMaker(connectionString));
-            IDbValueConverter dbValueConverter = new StrategiesDbValueConverter();
-            IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider();
-            IDataReaderToPoco dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
-            entityDatabaseMapProvider.AddMap<Test>();
-            ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();
-            ISqlQueryBuilder sqlQueryBuilder = new MsSql2014SqlQueryBuilder(entityDatabaseMapProvider, sqlQueryCutter);
-            var db = new Db(dbConnectionProvider, dbValueConverter, dataReaderToPoco, sqlQueryBuilder);
-            return db;
+            return Factory.Db();
         }
     }
 }

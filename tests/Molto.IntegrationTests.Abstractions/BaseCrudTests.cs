@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using FluentAssertions;
 using Molto.Abstractions;
 using Xunit;
@@ -21,6 +22,26 @@ namespace Molto.IntegrationTests.Abstractions
 
                 //Act
                 var result = db.Query<Test>("");
+
+                //Assert
+                result.Should().NotBeEmpty();
+                var persistedItem = result.SingleOrDefault(x => x.Id == item.Id);
+                CompareTestItem(persistedItem, item);
+
+            }
+        }
+
+        [Fact]
+        public async Task QueryAsync()
+        {
+            //Arrange
+            using (var db = MakeDb())
+            {
+                var item = DataGenerator.WellKnownTest();
+                db.Insert(item);
+
+                //Act
+                var result = await db.QueryAsync<Test>(null).ConfigureAwait(false);
 
                 //Assert
                 result.Should().NotBeEmpty();

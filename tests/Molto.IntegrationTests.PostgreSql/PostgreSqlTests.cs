@@ -37,5 +37,7 @@ namespace Molto.IntegrationTests.PostgreSql
             var db = new Db(dbConnectionProvider, dbValueConverter, dataReaderToPoco, sqlQueryBuilder);
             return db;
         }
+
+        
     }
 }

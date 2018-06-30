@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Molto.Abstractions;
@@ -24,6 +25,8 @@ namespace Molto
         Page<T> Page<T>(long page, long itemsPerPage, string sql = null, params object[] args);
 
         T Single<T>(string sql = null, params object[] args);
+
+        Task<IList<T>> QueryAsync<T>(string sql = null, params object[] args);
     }
 
     public class Db : IDb
@@ -140,6 +143,40 @@ namespace Molto
             catch (Exception ex)
             {
                 throw new MoltoSqlException(commandText, ex);
+            }
+        }
+
+        protected async Task<DbDataReader> GetReaderAsync(DbCommand command)
+        {
+            string commandText = command.CommandText;
+            try
+            {
+                return await command.ExecuteReaderAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                throw new MoltoSqlException(commandText, ex);
+            }
+        }
+
+        public async Task<IList<T>> QueryAsync<T>(string sql, params object[] args)
+        {
+            sql = _sqlQueryBuilder.SelectSql<T>(sql);
+            using (var cmd = (DbCommand)CreateCommand(sql, args))
+            {
+                using (var r = await GetReaderAsync(cmd).ConfigureAwait(false))
+                {
+                    var result = new List<T>();
+                    while (true)
+                    {
+                        if (!await r.ReadAsync().ConfigureAwait(false))
+                        {
+                            return result;
+                        }
+                        var item = _dataReaderToPoco.Convert<T>(r);
+                        result.Add(item);
+                    }
+                }
             }
         }
 

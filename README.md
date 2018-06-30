@@ -10,7 +10,7 @@ Tecnology goals
 1. Fully tested and testable
 1. Extensible by plugins and proper implementation
 1. Comprensible design
-1. Simple 
+1. Simple
 1. Fast
 
 Current tasks
@@ -21,7 +21,7 @@ Current tasks
 	- [ ] Create (Insert)
 	    - [x] Insert all fields
 		- [ ] Insert and return Database Identity
-	- [ ] Read 
+	- [ ] Read
 		- [x] Query IList<T> - Db.Query<Test>()
 		- [x] Paged result - Db.PageAsync<Test>(1, 5, "ORDER BY Id")
 		- [X] Single result - Db.Single<Test>("WHERE id = @0", 1)
@@ -40,7 +40,7 @@ Current tasks
 - [ ] Mapping Abilities
 	- [ ] field name
 	- [ ] table name
-	- [ ] readonly 
+	- [ ] readonly
 	- [ ] ignore
 	- [ ] insert only (v2?)
 	- [ ] update only (v2?)
@@ -77,26 +77,26 @@ Note: the Benchmarks are 'freely' inspired by the Dapper's ones.
 2018-06-22 - Query/MsSql only
 -----------------------------
 
-    ORM |             Type |   Method | Return |     Mean |    Error |    StdDev | Rank |  Gen 0 | Allocated |
-------- |----------------- |--------- |------- |---------:|---------:|----------:|-----:|-------:|----------:|
- Dapper | DapperBenchmarks | Query<T> |   Post | 69.85 us | 2.325 us | 0.6040 us |    1 | 3.2813 |  13.68 KB |
-  Molto |  MoltoBenchmarks | Query<T> |   Post | 90.11 us | 4.300 us | 1.1170 us |    2 | 3.7500 |  15.42 KB |
+|    ORM |             Type |   Method | Return |     Mean |    Error |    StdDev | Rank |  Gen 0 | Allocated |
+|------- |----------------- |--------- |------- |---------:|---------:|----------:|-----:|-------:|----------:|
+| Dapper | DapperBenchmarks | Query<T> |   Post | 69.85 us | 2.325 us | 0.6040 us |    1 | 3.2813 |  13.68 KB |
+|  Molto |  MoltoBenchmarks | Query<T> |   Post | 90.11 us | 4.300 us | 1.1170 us |    2 | 3.7500 |  15.42 KB |
 
 2018-06-23 - Query/MsSql only
 -----------------------------
-  
-    ORM |             Type |   Method | Return |     Mean |     Error |    StdDev | Rank |  Gen 0 | Allocated |
-------- |----------------- |--------- |------- |---------:|----------:|----------:|-----:|-------:|----------:|
- Dapper | DapperBenchmarks | Query<T> |   Post | 70.23 us | 2.3429 us | 0.6085 us |    1 | 3.2813 |  13.68 KB |
-  Molto |  MoltoBenchmarks | Query<T> |   Post | 74.72 us | 0.2270 us | 0.0590 us |    2 | 3.4375 |  14.39 KB |
-  
+
+|    ORM |             Type |   Method | Return |     Mean |     Error |    StdDev | Rank |  Gen 0 | Allocated |
+|------- |----------------- |--------- |------- |---------:|----------:|----------:|-----:|-------:|----------:|
+| Dapper | DapperBenchmarks | Query<T> |   Post | 70.23 us | 2.3429 us | 0.6085 us |    1 | 3.2813 |  13.68 KB |
+|  Molto |  MoltoBenchmarks | Query<T> |   Post | 74.72 us | 0.2270 us | 0.0590 us |    2 | 3.4375 |  14.39 KB |
+
 2018-06-29 - Query/MsSql only
 -----------------------------
 
-    ORM |             Type |   Method | Return |     Mean |     Error |    StdDev | Rank |  Gen 0 | Allocated |
-------- |----------------- |--------- |------- |---------:|----------:|----------:|-----:|-------:|----------:|
- Dapper | DapperBenchmarks | Query<T> |   Post | 71.90 us | 3.8657 us | 1.0041 us |    1 | 3.2813 |  13.68 KB |
-  Molto |  MoltoBenchmarks | Query<T> |   Post | 76.01 us | 0.2326 us | 0.0604 us |    2 | 3.4375 |  14.39 KB |
+|    ORM |             Type |   Method | Return |     Mean |     Error |    StdDev | Rank |  Gen 0 | Allocated |
+|------- |----------------- |--------- |------- |---------:|----------:|----------:|-----:|-------:|----------:|
+| Dapper | DapperBenchmarks | Query<T> |   Post | 71.90 us | 3.8657 us | 1.0041 us |    1 | 3.2813 |  13.68 KB |
+|  Molto |  MoltoBenchmarks | Query<T> |   Post | 76.01 us | 0.2326 us | 0.0604 us |    2 | 3.4375 |  14.39 KB |
 
 
 Fun fact

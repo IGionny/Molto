@@ -24,7 +24,7 @@ Current tasks
 	- [ ] Read 
 		- [x] Query IList<T> - Db.Query<Test>()
 		- [x] Paged result - Db.PageAsync<Test>(1, 5, "ORDER BY Id")
-		- [ ] Single result
+		- [X] Single result - Db.Single<Test>("WHERE id = @0", 1)
 		- [x] Single field (multiple rows) - Db.Query<string>("SELECT name from TEST")
 		- [x] Count
 	- [x] Update
@@ -35,7 +35,7 @@ Current tasks
 - [ ] Multi database support  (Dialect and Mapping)
 	- [x] MsSql
 	- [x] SqlLite
-	- [ ] Postgresql
+	- [x] Postgresql
 	- [ ] MySql (?)
 - [ ] Mapping Abilities
 	- [ ] field name

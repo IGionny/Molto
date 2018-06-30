@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using FluentAssertions;
+using Molto.Abstractions;
 using Xunit;
 
 namespace Molto.IntegrationTests.Abstractions
@@ -134,7 +135,7 @@ namespace Molto.IntegrationTests.Abstractions
                 {
                     var item = DataGenerator.WellKnownTest();
                     db.Insert(item);
-                    items.Append(item);
+                    items[i] = item;
                 }
                 
                 //Act
@@ -146,6 +147,28 @@ namespace Molto.IntegrationTests.Abstractions
                 result.CurrentPage.Should().Be(1);
                 result.ItemsPerPage.Should().Be(5);
                 result.TotalPages.Should().BeGreaterOrEqualTo(2);
+            }
+        }
+
+        [Fact]
+        public void Single()
+        {
+            //Arrange
+            using (var db = MakeDb())
+            {
+                var items = new Test[10];
+                for (var i = 0; i < 10; i++)
+                {
+                    var item = DataGenerator.WellKnownTest();
+                    db.Insert(item);
+                    items[i] = item;
+                }
+
+                //Act
+                var result = db.Single<Test>(Sql.Where + " id = @0 ", items[0].Id);
+
+                //Assert
+                result.Should().NotBeNull();
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -142,6 +141,11 @@ namespace Molto
             return sql;
         }
 
+        public virtual string SingleSql(string sql)
+        {
+            return sql + " LIMIT 1 ";
+        }
+
         public virtual object[] GetValues<T>(T item)
         {
             var map = _entityDatabaseMapProvider.Get<T>();
@@ -183,7 +187,7 @@ namespace Molto
             return sb.ToString();
         }
 
-        public virtual  string Delete<T>()
+        public virtual  string DeleteSql<T>()
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Molto.Abstractions;
 
 namespace Molto.MsSql2014
@@ -104,6 +105,13 @@ namespace Molto.MsSql2014
 
             var skip = (page - 1) * itemsPerPage;
             sql = sql + $" OFFSET {skip}  ROWS FETCH NEXT {itemsPerPage}  ROWS ONLY";
+            return sql;
+        }
+
+        public override string SingleSql(string sql)
+        {
+            sql = sql.Trim().Substring(Sql.Select.Length);
+            sql = "SELECT TOP 1 " + sql;
             return sql;
         }
     }

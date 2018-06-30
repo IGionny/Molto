@@ -22,6 +22,8 @@ namespace Molto
         long Count<T>(string sql = null, params object[] args);
 
         Page<T> Page<T>(long page, long itemsPerPage, string sql = null, params object[] args);
+
+        T Single<T>(string sql = null, params object[] args);
     }
 
     public class Db : IDb
@@ -133,7 +135,7 @@ namespace Molto
             string commandText = command.CommandText;
             try
             {
-               return command.ExecuteReader();
+                return command.ExecuteReader();
             }
             catch (Exception ex)
             {
@@ -182,7 +184,7 @@ namespace Molto
         public int Delete<T>(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
-            var sql = _sqlQueryBuilder.Delete<T>();
+            var sql = _sqlQueryBuilder.DeleteSql<T>();
             object[] values = new object[1] { _sqlQueryBuilder.GetPrimaryKeyValue(item) };
             var result = Execute(sql, values);
             return result;
@@ -221,5 +223,22 @@ namespace Molto
 
             return result;
         }
+
+        public T Single<T>(string sql = null, params object[] args)
+        {
+          
+            sql = _sqlQueryBuilder.SelectSql<T>(sql);
+            var selectSql = _sqlQueryBuilder.SingleSql(sql);
+            using (IDbCommand cmd = CreateCommand(selectSql, args))
+            {
+                using (var r = GetReader(cmd))
+                {
+                    if (!r.Read()) return default(T);
+                    var item = _dataReaderToPoco.Convert<T>(r);
+                    return item;
+                }
+            }
+        }
+
     }
 }

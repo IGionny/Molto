@@ -12,6 +12,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Molto.MapByAttributes\Molto.MapByAttributes.csproj" />
     <ProjectReference Include="..\..\src\Molto.MsSql2014\Molto.MsSql2014.csproj" />
     <ProjectReference Include="..\..\src\Molto\Molto.csproj" />
     <ProjectReference Include="..\Molto.IntegrationTests.Abstractions\Molto.IntegrationTests.Abstractions.csproj" />

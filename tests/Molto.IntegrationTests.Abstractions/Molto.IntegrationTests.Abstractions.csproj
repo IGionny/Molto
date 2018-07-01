@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\Molto.MapByAttributes\Molto.MapByAttributes.csproj" />
     <ProjectReference Include="..\..\src\Molto\Molto.csproj" />
   </ItemGroup>
 

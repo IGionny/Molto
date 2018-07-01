@@ -5,7 +5,7 @@ using Molto.PostgreSql;
 
 namespace Molto.IntegrationTests.PostgreSql
 {
-    public class PostgreSqlTests : BaseCrudTests
+    public class PostgreSqlTestsOnTest : BaseCrudTestsOnTest
     {
         private string _createTableSql =
             @"CREATE TABLE IF NOT EXISTS test (
@@ -29,7 +29,7 @@ namespace Molto.IntegrationTests.PostgreSql
             IDbConnectionProvider dbConnectionProvider = new InMemoryDbConnectionProvider();
             dbConnectionProvider.AddConnectionFactory("default", new PostgreSqlConnectionMaker(connectionString));
             IDbValueConverter dbValueConverter = new PostgreSqlDbValueConverter();
-            IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider();
+            IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider(new DirectPropertyEntityMapper());
             IDataReaderToPoco dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
             entityDatabaseMapProvider.AddMap<Test>();
             ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();

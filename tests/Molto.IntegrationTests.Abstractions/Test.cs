@@ -2,7 +2,12 @@
 
 namespace Molto.IntegrationTests.Abstractions
 {
-    public class Test
+    public interface IEntity<TId>
+    {
+        TId Id { get; }
+    }
+
+    public class Test : IEntity<Guid>
     {
         //Default Constructor
         public Test()

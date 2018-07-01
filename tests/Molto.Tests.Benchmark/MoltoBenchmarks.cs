@@ -23,7 +23,7 @@ namespace Molto.Tests.Benchmark
             IDbConnectionProvider dbConnectionProvider = new InMemoryDbConnectionProvider();
             dbConnectionProvider.AddConnectionFactory("default", new MsSql2014ConnectionMaker(ConnectionString));
             IDbValueConverter dbValueConverter = new StrategiesDbValueConverter();
-            IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider();
+            IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider(new DirectPropertyEntityMapper());
             IDataReaderToPoco dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
             entityDatabaseMapProvider.AddMap<Post>();
             ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();

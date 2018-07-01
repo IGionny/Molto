@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Molto.Abstractions
 {
@@ -15,7 +14,7 @@ namespace Molto.Abstractions
     public interface IEntityDatabaseMapProvider
     {
         void Scan<T>();
-        void AddMap<T>();
+        void AddMap<T>(EntityMap map = null);
         EntityMap Get<T>();
     }
 

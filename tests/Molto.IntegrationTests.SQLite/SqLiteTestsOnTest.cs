@@ -4,7 +4,7 @@ using Molto.SQLite;
 
 namespace Molto.IntegrationTests.SQLite
 {
-    public class SQLiteTests : BaseCrudTests
+    public class SqLiteTestsOnTest : BaseCrudTestsOnTest
     {
         private readonly string _createTableTestSql = @"CREATE TABLE Test 
                             (id uniqueidentifier not null,
@@ -30,7 +30,7 @@ namespace Molto.IntegrationTests.SQLite
             IDbConnectionProvider dbConnectionProvider = new InMemoryDbConnectionProvider();
             dbConnectionProvider.AddConnectionFactory("default", new SQLiteConnectionMaker(connectionString));
             IDbValueConverter dbValueConverter = new StrategiesDbValueConverter();
-            IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider();
+            IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider(new DirectPropertyEntityMapper());
             IDataReaderToPoco dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
             entityDatabaseMapProvider.AddMap<Test>();
             ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();

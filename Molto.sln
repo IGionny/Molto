@@ -34,6 +34,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Molto.IntegrationTests.Post
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.Ideas.Tests", "tests\Molto.Ideas.Tests\Molto.Ideas.Tests.csproj", "{EED15980-78A4-4292-93AC-A5BCC3740696}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Molto.MapByAttributes", "src\Molto.MapByAttributes\Molto.MapByAttributes.csproj", "{A2B3A21F-9F4B-4CC6-9F45-367FAB2A1026}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -88,6 +90,10 @@ Global
 		{EED15980-78A4-4292-93AC-A5BCC3740696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EED15980-78A4-4292-93AC-A5BCC3740696}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EED15980-78A4-4292-93AC-A5BCC3740696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2B3A21F-9F4B-4CC6-9F45-367FAB2A1026}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2B3A21F-9F4B-4CC6-9F45-367FAB2A1026}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2B3A21F-9F4B-4CC6-9F45-367FAB2A1026}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2B3A21F-9F4B-4CC6-9F45-367FAB2A1026}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

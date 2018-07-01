@@ -15,5 +15,17 @@ namespace Molto.IntegrationTests.Abstractions
 
             return item;
         }
+
+        public static Alias WellKnownAlias(Guid? id = null)
+        {
+            var item = new Alias();
+            item.Id = id ?? Guid.NewGuid();
+            item.FullName = "A Nice Test";
+            item.IgnoreMe = Guid.NewGuid().ToString();
+            item.Money = 43434.43M;
+            item.CreatedAt = new DateTime(2018, 06, 15, 15, 12, 23, DateTimeKind.Utc);
+            item.Discount = 343242M;
+            return item;
+        }
     }
 }

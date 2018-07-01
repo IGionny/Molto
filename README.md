@@ -38,17 +38,18 @@ Current tasks
 	- [x] Postgresql
 	- [ ] MySql (?)
 - [ ] Mapping Abilities
-	- [ ] field name
-	- [ ] table name
+	- [x] field name
+	- [x] table name
 	- [ ] readonly
 	- [ ] ignore
 	- [ ] insert only (v2?)
 	- [ ] update only (v2?)
 - [ ] Mapping Strategies
 	- [ ] Assembly scanner
-	- [ ] Mapping By Attribute
-	- [ ] Mapping By Convention
+	- [x] Mapping By Attribute
+	- [x] Mapping By Convention
 	- [ ] Mapping via Fluent
+	- [x] Late Mapping
 - [ ] Null-Value support
 - [ ] Private fields
 - [ ] Composite Primary Key

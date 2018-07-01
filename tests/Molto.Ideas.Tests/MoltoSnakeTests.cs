@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Molto.Abstractions;
 using Molto.IntegrationTests.Abstractions;
 using Molto.IntegrationTests.MsSql2014;
+using Molto.MsSql2014;
 using Xunit;
 
 namespace Molto.Ideas.Tests

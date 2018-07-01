@@ -42,5 +42,7 @@ namespace Molto.IntegrationTests.MsSql2014
         {
             return Factory.Db();
         }
+
+        protected override IEntityDatabaseMapProvider _mapProvider => Factory.EntityDatabaseMapProvider;
     }
 }

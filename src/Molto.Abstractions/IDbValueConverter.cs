@@ -26,6 +26,12 @@ namespace Molto.Abstractions
             Properties = new Dictionary<string, EntityPropertyMap>(); 
         }
 
+
+        /// <summary>
+        /// Cached columns part
+        /// </summary>
+        public string ColumnsCache { get; set; }
+
         /// <summary>
         /// The database table name related to the Entity
         /// </summary>
@@ -67,5 +73,6 @@ namespace Molto.Abstractions
         public bool IsPrimaryKey { get; set; }
         public PropertyInfo Property { get; set; }
         public string ColumnName { get; set; }
+        public bool Ignore { get; set; }
     }
 }

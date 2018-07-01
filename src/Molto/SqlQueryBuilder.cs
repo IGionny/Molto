@@ -81,7 +81,7 @@ namespace Molto
 
         }
 
-        public virtual  IDictionary<EntityPropertyMap, object> GetColumnsValue<T>(T item)
+        public virtual IDictionary<EntityPropertyMap, object> GetColumnsValue<T>(T item)
         {
             var map = _entityDatabaseMapProvider.Get<T>();
             var result = new Dictionary<EntityPropertyMap, object>(map.Properties.Count);
@@ -201,9 +201,17 @@ namespace Molto
 
         public virtual string GetFields<T>(EntityMap map)
         {
-            IList<string> columns = map.Properties.Values.Select(x => x.ColumnName).ToList();
+            if (!string.IsNullOrWhiteSpace(map.ColumnsCache))
+            {
+                return map.ColumnsCache;
+            }
 
-            return string.Join(",", columns);
+            IList<string> columns = map.Properties.Values.Where(x => !x.Ignore).Select(x => x.ColumnName).ToList();
+
+            var selectColumns = string.Join(",", columns);
+            map.ColumnsCache = selectColumns;
+
+            return map.ColumnsCache;
         }
 
         public virtual string EscapeTableName(string table)

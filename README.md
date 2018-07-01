@@ -41,7 +41,7 @@ Current tasks
 	- [x] field name
 	- [x] table name
 	- [ ] readonly
-	- [ ] ignore
+	- [x] ignore
 	- [ ] insert only (v2?)
 	- [ ] update only (v2?)
 - [ ] Mapping Strategies

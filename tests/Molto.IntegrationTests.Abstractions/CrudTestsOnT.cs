@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -11,6 +12,29 @@ namespace Molto.IntegrationTests.Abstractions
     public abstract class CrudTestsOnT<T,TId> where T: IEntity<TId>
     {
         protected abstract IDb MakeDb();
+        protected abstract IEntityDatabaseMapProvider _mapProvider { get; }
+
+
+
+        [Fact]
+        public void ReconnectConnection_OnClose()
+        {
+            //Arrange
+            using (var db = (Db)MakeDb())
+            {
+                db.Connection.State.Should().Be(ConnectionState.Open);
+                var item = WellknownData();
+                db.Insert(item);
+
+                db.Connection.Close();
+                
+                //Act
+                db.Query<T>("");
+                db.Connection.State.Should().Be(ConnectionState.Open);
+
+                //Assert
+            }
+        }
 
         [Fact]
         public void Query()
@@ -111,6 +135,43 @@ namespace Molto.IntegrationTests.Abstractions
                 var resultQuery = db.Query<T>("WHERE id = @0", item.Id).ToList();
                 resultQuery.Should().HaveCount(1);
                 CompareItem(resultQuery[0], item);
+            }
+        }
+
+        public virtual void CleanupTable()
+        {
+            var map = _mapProvider.Get<T>();
+            using (var db = MakeDb())
+            {
+                db.Execute(Sql.Truncate + " " + map.Table);
+            }
+        }
+
+        [Fact]
+        public void Insert_Massive()
+        {
+            int elements = 1000;
+            var prepareItems = new T[elements];
+            for (var i = 0; i < elements; i++)
+            {
+                prepareItems[i] = WellknownData();
+            }
+
+            //Cleanup
+            CleanupTable();
+
+            //Arrange
+            using (var db = MakeDb())
+            {
+                foreach (var prepareItem in prepareItems)
+                {
+                    db.Insert(prepareItem);
+                }
+            }
+
+            using (var db = MakeDb())
+            {
+                db.Count<T>().Should().Be(elements);
             }
         }
 

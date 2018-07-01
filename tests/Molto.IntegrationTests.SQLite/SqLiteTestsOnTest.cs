@@ -41,5 +41,18 @@ namespace Molto.IntegrationTests.SQLite
 
             return db;
         }
+
+        public override void CleanupTable()
+        {
+            var map = _mapProvider.Get<Test>();
+            using (var db = MakeDb())
+            {
+                //SqlLite does not provide TRUNCATE
+
+                db.Execute(Sql.Delete + " FROM " + map.Table);
+            }
+        }
+
+        protected override IEntityDatabaseMapProvider _mapProvider => new EntityDatabaseMapProvider(new DirectPropertyEntityMapper());
     }
 }

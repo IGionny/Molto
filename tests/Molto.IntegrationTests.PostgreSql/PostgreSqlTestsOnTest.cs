@@ -38,6 +38,6 @@ namespace Molto.IntegrationTests.PostgreSql
             return db;
         }
 
-        
+        protected override IEntityDatabaseMapProvider _mapProvider => new EntityDatabaseMapProvider(new DirectPropertyEntityMapper());
     }
 }

@@ -8,8 +8,6 @@ using Molto.Abstractions;
 
 namespace Molto
 {
-    
-
     public class Db : IDb
     {
         private readonly IDbConnectionProvider _dbConnectionProvider;

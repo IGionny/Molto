@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FluentAssertions;
+using Molto.Abstractions;
 using Xunit;
 
 namespace Molto.IntegrationTests.Abstractions
@@ -48,5 +49,7 @@ namespace Molto.IntegrationTests.Abstractions
             item1.Id.Should().Be(item2.Id);
             item1.FullName.Should().Be(item2.FullName);
         }
+
+     
     }
 }

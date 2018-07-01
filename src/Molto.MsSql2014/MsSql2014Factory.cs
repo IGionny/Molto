@@ -8,18 +8,21 @@ namespace Molto.MsSql2014
         private readonly IDbConnectionProvider _dbConnectionProvider;
         private readonly IDbValueConverter _dbValueConverter;
         private readonly ISqlQueryBuilder _sqlQueryBuilder;
+        private readonly IEntityDatabaseMapProvider _entityDatabaseMapProvider;
 
         public MsSql2014Factory(string connectionString, IEntityMapper entityMapper = null)
         {
             _dbConnectionProvider = new InMemoryDbConnectionProvider();
             _dbConnectionProvider.AddConnectionFactory("default", new MsSql2014ConnectionMaker(connectionString));
             _dbValueConverter = new StrategiesDbValueConverter();
-            IEntityDatabaseMapProvider entityDatabaseMapProvider =
+            _entityDatabaseMapProvider  =
                 new EntityDatabaseMapProvider(entityMapper ?? new DirectPropertyEntityMapper());
-            _dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);
+            _dataReaderToPoco = new DataReaderToPoco(_entityDatabaseMapProvider);
             ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();
-            _sqlQueryBuilder = new MsSql2014SqlQueryBuilder(entityDatabaseMapProvider, sqlQueryCutter);
+            _sqlQueryBuilder = new MsSql2014SqlQueryBuilder(_entityDatabaseMapProvider, sqlQueryCutter);
         }
+
+        public IEntityDatabaseMapProvider EntityDatabaseMapProvider => _entityDatabaseMapProvider;
 
         public IDb Db()
         {

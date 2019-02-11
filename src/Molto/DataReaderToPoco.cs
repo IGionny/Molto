@@ -20,7 +20,6 @@ namespace Molto
         {
             if (reader == null) throw new ArgumentNullException(nameof(reader));
 
-
             var type = TypeUtils.RevealType<T>();
 
             //if is a primitive like 
@@ -28,7 +27,7 @@ namespace Molto
             {
                 //From Int32 to Int64
 
-                if (typeof(T) == typeof(Int64) && reader[0] is int number)
+                if (typeof(T) == typeof(long) && reader[0] is int number)
                 {
                     return (T)(object)(long)number;
                 }

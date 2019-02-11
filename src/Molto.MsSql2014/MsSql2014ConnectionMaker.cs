@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 using Molto.Abstractions;
 using System.Data.SqlClient;
 
@@ -16,8 +15,7 @@ namespace Molto.MsSql2014
 
         public IDbConnection NewConnection()
         {
-            SqlConnection conn =  new SqlConnection(_connectionString);
-            return conn;
+            return new SqlConnection(_connectionString);
         }
     }
 }

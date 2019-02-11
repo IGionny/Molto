@@ -3,7 +3,7 @@ Molto
 
 Molto is a new Micro-ORM for .Net Core inspired by the beautiful syntax of NPoco and the speed of Dapper.
 
-Tecnology goals
+Technology goals
 ---------------
 
 1. .NET Core only
@@ -22,10 +22,10 @@ Current tasks
 	    - [x] Insert all fields
 		- [ ] Insert and return Database Identity
 	- [ ] Read
-		- [x] Query IList<T> - Db.Query<Test>()
-		- [x] Paged result - Db.PageAsync<Test>(1, 5, "ORDER BY Id")
-		- [X] Single result - Db.Single<Test>("WHERE id = @0", 1)
-		- [x] Single field (multiple rows) - Db.Query<string>("SELECT name from TEST")
+		- [x] Query IList<T> - `Db.Query<Test>()`
+		- [x] Paged result - `Db.PageAsync<Test>(1, 5, "ORDER BY Id")`
+		- [X] Single result - `Db.Single<Test>("WHERE id = @0", 1)`
+		- [x] Single field (multiple rows) - `Db.Query<string>("SELECT name from TEST")`
 		- [x] Count
 	- [x] Update
 	- [x] Delete
@@ -62,7 +62,7 @@ Current tasks
 - [ ] Implement transactions
 - [ ] Timeout on command
 - [ ] Implement a DefaultFactory to simplify startup
-- [x] Banchmark with BenchmarkDotNet
+- [x] Benchmark with BenchmarkDotNet
 - [ ] Log via MS interface ILogger
 
 Next:

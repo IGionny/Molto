@@ -16,12 +16,12 @@ namespace Molto
                 //Convention: the primary key name is always 'Id'
                 //todo: add mapping logic customizable
                 var isPrimaryKey = string.Equals(prop.Name, "Id", StringComparison.InvariantCultureIgnoreCase);
-                var columName = prop.Name;
-                result.Properties.Add(columName.ToLower(), new EntityPropertyMap
+                var columnName = prop.Name;
+                result.Properties.Add(columnName.ToLower(), new EntityPropertyMap
                 {
                     IsPrimaryKey = isPrimaryKey,
                     Property = prop,
-                    ColumnName = columName,
+                    ColumnName = columnName,
                 });
             }
 

@@ -14,9 +14,7 @@ namespace Molto.SQLite
         {
             var skip = (page - 1) * itemsPerPage;
 
-            sql = sql + $" LIMIT {itemsPerPage} OFFSET {skip} ";
-
-            return sql;
+            return sql + $" LIMIT {itemsPerPage} OFFSET {skip} ";
         }
     }
 }

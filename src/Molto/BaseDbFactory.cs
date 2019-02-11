@@ -13,8 +13,7 @@ namespace Molto
 
         public virtual IDb Db()
         {
-            var db = new Db(_dbConnectionProvider, _dbValueConverter, _dataReaderToPoco, _sqlQueryBuilder);
-            return db;
+            return new Db(_dbConnectionProvider, _dbValueConverter, _dataReaderToPoco, _sqlQueryBuilder);
         }
     }
 }

@@ -104,15 +104,13 @@ namespace Molto.MsSql2014
                 throw new Exception("SQL Server 2012 Paging via OFFSET requires an ORDER BY statement.");
 
             var skip = (page - 1) * itemsPerPage;
-            sql = sql + $" OFFSET {skip}  ROWS FETCH NEXT {itemsPerPage}  ROWS ONLY";
-            return sql;
+            return sql + $" OFFSET {skip}  ROWS FETCH NEXT {itemsPerPage}  ROWS ONLY";
         }
 
         public override string SingleSql(string sql)
         {
             sql = sql.Trim().Substring(Sql.Select.Length);
-            sql = "SELECT TOP 1 " + sql;
-            return sql;
+            return "SELECT TOP 1 " + sql;
         }
     }
 }

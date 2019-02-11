@@ -16,8 +16,7 @@ namespace Molto.PostgreSql
                 throw new Exception("SQL Server 2012 Paging via OFFSET requires an ORDER BY statement.");
 
             var skip = (page - 1) * itemsPerPage;
-            sql = sql + $" OFFSET {skip}  ROWS FETCH NEXT {itemsPerPage}  ROWS ONLY";
-            return sql;
+            return sql + $" OFFSET {skip}  ROWS FETCH NEXT {itemsPerPage}  ROWS ONLY";
         }
     }
 }

@@ -15,8 +15,7 @@ namespace Molto.PostgreSql
 
         public IDbConnection NewConnection()
         {
-            var conn = new NpgsqlConnection(_connectionString);
-            return conn;
+            return new NpgsqlConnection(_connectionString);
         }
     }
 }

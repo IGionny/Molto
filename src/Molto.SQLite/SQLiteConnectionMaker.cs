@@ -15,8 +15,7 @@ namespace Molto.SQLite
 
         public IDbConnection NewConnection()
         {
-            SQLiteConnection conn = new SQLiteConnection(_connectionString);
-            return conn;
+            return new SQLiteConnection(_connectionString);
         }
     }
 }

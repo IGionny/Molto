@@ -24,12 +24,12 @@ namespace Molto.MapByAttributes
                 //Convention: the primary key name is always 'Id'
                 //todo: add mapping logic customizable
                 var isPrimaryKey = string.Equals(prop.Name, "Id", StringComparison.InvariantCultureIgnoreCase);
-                var columName = prop.Name;
+                var columnName = prop.Name;
                 var map = new EntityPropertyMap
                 {
                     IsPrimaryKey = isPrimaryKey,
                     Property = prop,
-                    ColumnName = columName,
+                    ColumnName = columnName,
                 };
 
                 var columnAttribute = prop.GetCustomAttributes(typeof(ColumnAttribute), true)?.SingleOrDefault();

@@ -41,10 +41,12 @@ namespace Molto
             }
         }
 
-        public Db(IDbConnectionProvider dbConnectionProvider, IDbValueConverter dbValueConverter, IDataReaderToPoco dataReaderToPoco, ISqlQueryBuilder sqlQueryBuilder)
+        public Db(IDbConnectionProvider dbConnectionProvider, IDbValueConverter dbValueConverter,
+            IDataReaderToPoco dataReaderToPoco, ISqlQueryBuilder sqlQueryBuilder)
         {
-            _dbConnectionProvider = dbConnectionProvider ?? throw new ArgumentNullException(nameof(dbConnectionProvider));
-            this._dbValueConverter = dbValueConverter ?? throw new ArgumentNullException(nameof(dbValueConverter));
+            _dbConnectionProvider =
+                dbConnectionProvider ?? throw new ArgumentNullException(nameof(dbConnectionProvider));
+            _dbValueConverter = dbValueConverter ?? throw new ArgumentNullException(nameof(dbValueConverter));
             _dataReaderToPoco = dataReaderToPoco;
             _sqlQueryBuilder = sqlQueryBuilder;
         }
@@ -81,7 +83,7 @@ namespace Molto
 
         public int Execute(string sql, params object[] args)
         {
-            using (IDbCommand cmd = CreateCommand(sql, args))
+            using (var cmd = CreateCommand(sql, args))
             {
                 try
                 {
@@ -92,7 +94,6 @@ namespace Molto
                 {
                     throw new Exception($"The query $'{sql}' throw '{ex.Message}' ", ex);
                 }
-
             }
         }
 
@@ -108,13 +109,13 @@ namespace Molto
             {
                 _dbValueConverter.SetValue(p, value);
             }
-            cmd.Parameters.Add(p);
 
+            cmd.Parameters.Add(p);
         }
 
         protected IDataReader GetReader(IDbCommand command)
         {
-            string commandText = command.CommandText;
+            var commandText = command.CommandText;
             try
             {
                 return command.ExecuteReader();
@@ -127,7 +128,7 @@ namespace Molto
 
         protected async Task<DbDataReader> GetReaderAsync(DbCommand command)
         {
-            string commandText = command.CommandText;
+            var commandText = command.CommandText;
             try
             {
                 return await command.ExecuteReaderAsync().ConfigureAwait(false);
@@ -141,7 +142,7 @@ namespace Molto
         public async Task<IList<T>> QueryAsync<T>(string sql, params object[] args)
         {
             sql = _sqlQueryBuilder.SelectSql<T>(sql);
-            using (var cmd = (DbCommand)CreateCommand(sql, args))
+            using (var cmd = (DbCommand) CreateCommand(sql, args))
             {
                 using (var r = await GetReaderAsync(cmd).ConfigureAwait(false))
                 {
@@ -152,6 +153,7 @@ namespace Molto
                         {
                             return result;
                         }
+
                         var item = _dataReaderToPoco.Convert<T>(r);
                         result.Add(item);
                     }
@@ -166,7 +168,6 @@ namespace Molto
             {
                 using (var r = GetReader(cmd))
                 {
-
                     while (true)
                     {
                         if (!r.Read()) yield break;
@@ -182,8 +183,7 @@ namespace Molto
             if (item == null) throw new ArgumentNullException(nameof(item));
             var sql = _sqlQueryBuilder.InsertSql<T>();
             object[] values = _sqlQueryBuilder.GetValues<T>(item);
-            var result = Execute(sql, values);
-            return result;
+            return Execute(sql, values);
         }
 
         public int Update<T>(T item)
@@ -191,26 +191,24 @@ namespace Molto
             if (item == null) throw new ArgumentNullException(nameof(item));
             var sql = _sqlQueryBuilder.UpdateSql<T>();
             //Get all the properties value except for the primary key
-            var values = _sqlQueryBuilder.GetColumnsValue<T>(item).Where(x => !x.Key.IsPrimaryKey).Select(x => x.Value).ToList();
+            var values = _sqlQueryBuilder.GetColumnsValue<T>(item).Where(x => !x.Key.IsPrimaryKey).Select(x => x.Value)
+                .ToList();
             values.Add(_sqlQueryBuilder.GetPrimaryKeyValue(item));
-            var result = Execute(sql, values.ToArray());
-            return result;
+            return Execute(sql, values.ToArray());
         }
 
         public int Delete<T>(T item)
         {
             if (item == null) throw new ArgumentNullException(nameof(item));
             var sql = _sqlQueryBuilder.DeleteSql<T>();
-            object[] values = new object[1] { _sqlQueryBuilder.GetPrimaryKeyValue(item) };
-            var result = Execute(sql, values);
-            return result;
+            object[] values = new object[1] {_sqlQueryBuilder.GetPrimaryKeyValue(item)};
+            return Execute(sql, values);
         }
 
         public long Count<T>(string sql = null, params object[] args)
         {
             var countSql = _sqlQueryBuilder.CountSql<T>(sql);
-            var result = Query<long>(countSql, args).FirstOrDefault();
-            return result;
+            return Query<long>(countSql, args).FirstOrDefault();
         }
 
         public Page<T> Page<T>(long page, long itemsPerPage, string sql = null, params object[] args)
@@ -219,6 +217,7 @@ namespace Molto
             {
                 throw new ArgumentException($"{nameof(page)} can't be less than 1 (it's 1 base).");
             }
+
             if (itemsPerPage < 1)
             {
                 throw new ArgumentException($"{nameof(itemsPerPage)} can't be less than 1.");
@@ -242,19 +241,16 @@ namespace Molto
 
         public T Single<T>(string sql = null, params object[] args)
         {
-          
             sql = _sqlQueryBuilder.SelectSql<T>(sql);
             var selectSql = _sqlQueryBuilder.SingleSql(sql);
-            using (IDbCommand cmd = CreateCommand(selectSql, args))
+            using (var cmd = CreateCommand(selectSql, args))
             {
                 using (var r = GetReader(cmd))
                 {
                     if (!r.Read()) return default(T);
-                    var item = _dataReaderToPoco.Convert<T>(r);
-                    return item;
+                    return _dataReaderToPoco.Convert<T>(r);
                 }
             }
         }
-
     }
 }

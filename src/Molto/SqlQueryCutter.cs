@@ -59,8 +59,7 @@ namespace Molto
                 //no other select
                 if (FindFirstSelect(sql) == -1)
                 {
-                    sql = sql.Substring(FindFirstFrom(sql));
-                    return sql;
+                    return sql.Substring(FindFirstFrom(sql));
                 }
 
                 firstSelect = FindFirstSelect(sql);
@@ -72,8 +71,7 @@ namespace Molto
             if (firstFrom < firstSelect)
             {
                 //The select is AFTER the from: meaning it is in a join or in the where clause
-                sql = sql.Substring(FindFirstFrom(sql));
-                return sql;
+                return sql.Substring(FindFirstFrom(sql));
             }
 
             throw new NotImplementedException();

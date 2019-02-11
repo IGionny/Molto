@@ -26,8 +26,7 @@ namespace Molto.MsSql2014
 
         public IDb Db()
         {
-            var db = new Db(_dbConnectionProvider, _dbValueConverter, _dataReaderToPoco, _sqlQueryBuilder);
-            return db;
+            return new Db(_dbConnectionProvider, _dbValueConverter, _dataReaderToPoco, _sqlQueryBuilder);
         }
     }
 }

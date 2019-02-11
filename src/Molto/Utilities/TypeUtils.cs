@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Molto.Utilities
 {
@@ -13,18 +11,12 @@ namespace Molto.Utilities
     {
         public static bool IsPrimitive<T>()
         {
-            var t = typeof(T);
-            return IsPrimitive(t);
+            return IsPrimitive(typeof(T));
         }
 
         public static bool IsPrimitive(Type type)
         {
-            if (type.IsPrimitive || type == typeof(Decimal) || type == typeof(String))
-            {
-                return true;
-            }
-
-            return false;
+            return type.IsPrimitive || type == typeof(decimal) || type == typeof(string);
         }
 
 

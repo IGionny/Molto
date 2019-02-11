@@ -13,20 +13,22 @@ namespace Molto
 
         public SqlQueryBuilder(IEntityDatabaseMapProvider entityDatabaseMapProvider, ISqlQueryCutter sqlQueryCutter)
         {
-            _entityDatabaseMapProvider = entityDatabaseMapProvider ?? throw new ArgumentNullException(nameof(entityDatabaseMapProvider));
+            _entityDatabaseMapProvider = entityDatabaseMapProvider ??
+                                         throw new ArgumentNullException(nameof(entityDatabaseMapProvider));
             _sqlQueryCutter = sqlQueryCutter ?? throw new ArgumentNullException(nameof(sqlQueryCutter));
         }
 
         public virtual string SelectSql<T>(string sql)
         {
-            if (!string.IsNullOrWhiteSpace(sql) && sql.Trim().StartsWith(Sql.Select, StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrWhiteSpace(sql) &&
+                sql.Trim().StartsWith(Sql.Select, StringComparison.InvariantCultureIgnoreCase))
             {
                 return sql;
             }
 
             var map = _entityDatabaseMapProvider.Get<T>();
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("SELECT ");
             sb.Append(GetFields<T>(map));
             FromToWhereSql(sb, map, sql);
@@ -34,7 +36,7 @@ namespace Molto
             return sb.ToString();
         }
 
-        protected virtual  void FromToWhereSql(StringBuilder sb, EntityMap map, string sql)
+        protected virtual void FromToWhereSql(StringBuilder sb, EntityMap map, string sql)
         {
             sb.Append(" FROM ");
             sb.Append(EscapeTableName(map.Table));
@@ -53,11 +55,12 @@ namespace Molto
                 {
                     sb.Append(" ");
                 }
+
                 sb.Append(sql);
             }
         }
 
-        public virtual  string InsertSql<T>()
+        public virtual string InsertSql<T>()
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 
@@ -78,7 +81,6 @@ namespace Molto
             })));
             sb.Append(")");
             return sb.ToString();
-
         }
 
         public virtual IDictionary<EntityPropertyMap, object> GetColumnsValue<T>(T item)
@@ -103,9 +105,7 @@ namespace Molto
                 throw new Exception($"The map of '{typeof(T).Name}' does not provide a PrimaryKey");
             }
 
-            var result = map.PrimaryKey.Property.GetValue(item);
-
-            return result;
+            return map.PrimaryKey.Property.GetValue(item);
         }
 
         public virtual string CountSql<T>(string sql)
@@ -117,10 +117,11 @@ namespace Molto
                 sql = null;
             }
 
-            if (string.IsNullOrWhiteSpace(sql) || !sql.Trim().StartsWith("SELECT", StringComparison.InvariantCultureIgnoreCase))
+            if (string.IsNullOrWhiteSpace(sql) ||
+                !sql.Trim().StartsWith("SELECT", StringComparison.InvariantCultureIgnoreCase))
             {
                 var map = _entityDatabaseMapProvider.Get<T>();
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append("SELECT COUNT(*) ");
                 FromToWhereSql(sb, map, sql);
                 return sb.ToString();
@@ -130,15 +131,12 @@ namespace Molto
             //SELECT  name, eta, etc.. FROM table WHERE.. -> SELECT COUNT(*) FROM table WHERE..
             //SELECT  name, (SELECT 1) FROM table WHERE.. -> SELECT COUNT(*) FROM table WHERE..
             var query = _sqlQueryCutter.TrimSelectStart(sql);
-            var result = "SELECT COUNT(*) " + query;
-            return result;
+            return "SELECT COUNT(*) " + query;
         }
 
         public virtual string PageSql<T>(string sql, long page, long itemsPerPage, long resultTotalItems)
         {
-            long skip = (page - 1) * itemsPerPage;
-            sql = sql + $" LIMIT {itemsPerPage} OFFSET {skip} ";
-            return sql;
+            return $"{sql} LIMIT {itemsPerPage} OFFSET {((page - 1) * itemsPerPage)} ";
         }
 
         public virtual string SingleSql(string sql)
@@ -167,13 +165,13 @@ namespace Molto
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append("UPDATE ");
             sb.Append(EscapeTableName(map.Table));
             sb.Append(" SET ");
 
-            IList<string> columns = new List<string>(map.Properties.Count -1);
+            IList<string> columns = new List<string>(map.Properties.Count - 1);
             int i = 0;
             foreach (var propertyMap in map.Properties.Values.Where(x => !x.IsPrimaryKey))
             {
@@ -187,11 +185,11 @@ namespace Molto
             return sb.ToString();
         }
 
-        public virtual  string DeleteSql<T>()
+        public virtual string DeleteSql<T>()
         {
             var map = _entityDatabaseMapProvider.Get<T>();
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append("DELETE FROM ");
             sb.Append(EscapeTableName(map.Table));
@@ -220,6 +218,5 @@ namespace Molto
         }
 
         public virtual string[] ReservedWords => new string[0];
-
     }
 }

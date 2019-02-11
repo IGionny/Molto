@@ -34,8 +34,7 @@ namespace Molto.IntegrationTests.PostgreSql
             entityDatabaseMapProvider.AddMap<Test>();
             ISqlQueryCutter sqlQueryCutter = new SqlQueryCutter();
             ISqlQueryBuilder sqlQueryBuilder = new PostgreSqlQueryBuilder(entityDatabaseMapProvider, sqlQueryCutter);
-            var db = new Db(dbConnectionProvider, dbValueConverter, dataReaderToPoco, sqlQueryBuilder);
-            return db;
+            return new Db(dbConnectionProvider, dbValueConverter, dataReaderToPoco, sqlQueryBuilder);
         }
 
         protected override IEntityDatabaseMapProvider _mapProvider => new EntityDatabaseMapProvider(new DirectPropertyEntityMapper());

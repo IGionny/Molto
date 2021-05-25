@@ -25,7 +25,7 @@ namespace Molto.IntegrationTests.PostgreSql
         protected override IDb MakeDb()
         {
             var connectionString =
-                "host=192.168.1.13;user id=postgres;password=Tests;Application Name=MoltoTests;database=Test";
+                "host=192.168.170.21;port=7432;user id=postgres;password=Test;Application Name=MoltoTests;database=Test";
             IDbConnectionProvider dbConnectionProvider = new InMemoryDbConnectionProvider();
             dbConnectionProvider.AddConnectionFactory("default", new PostgreSqlConnectionMaker(connectionString));
             IDbValueConverter dbValueConverter = new PostgreSqlDbValueConverter();

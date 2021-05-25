@@ -1,27 +1,28 @@
 ﻿using System;
 using System.Data.SqlClient;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Columns;
+using BenchmarkDotNet.Columns;
 using BenchmarkDotNet.Configs;
 using BenchmarkDotNet.Diagnosers;
+using BenchmarkDotNet.Exporters;
+using BenchmarkDotNet.Exporters.Csv;
 using BenchmarkDotNet.Jobs;
+using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Order;
-using BenchmarkDotNet.Validators;
 using Molto.Abstractions;
-using Molto.MsSql2014;
 using Molto.Tests.Benchmark.Helpers;
 
 namespace Molto.Tests.Benchmark
 {
-    [OrderProvider(SummaryOrderPolicy.FastestToSlowest)]
+    //[OrderProvider(SummaryOrderPolicy.FastestToSlowest)]
     [RankColumn]
     [Config(typeof(Config))]
     public abstract class BenchmarkBase
     {
         public const int Iterations = 50;
-        protected static readonly Random _rand = new Random();
+        protected static readonly Random _rand = new();
         protected SqlConnection _connection;
-        public static string ConnectionString { get; } = "Data Source=.\\;Initial Catalog=tests;User Id=test;Password=test;Trusted_Connection=False;";
+        public static string ConnectionString { get; } = ""; //"Data Source=.\\;Initial Catalog=tests;User Id=test;Password=test;Trusted_Connection=False;";
         protected int i;
         protected IDb _db;
 
@@ -38,19 +39,31 @@ namespace Molto.Tests.Benchmark
     {
         public Config()
         {
-            Add(ExecutionValidator.DontFailOnError);
-            Add(new MemoryDiagnoser());
-            Add(new ORMColum());
-            Add(new ReturnColum());
-            Add(JitOptimizationsValidator.DontFailOnError); // ALLOW NON-OPTIMIZED DLLS
-            Add(Job.Default
-                .WithUnrollFactor(BenchmarkBase.Iterations)
-                //.WithIterationTime(new TimeInterval(500, TimeUnit.Millisecond))
+            AddLogger(ConsoleLogger.Default);
+
+            AddExporter(CsvExporter.Default);
+            AddExporter(MarkdownExporter.GitHub);
+            AddExporter(HtmlExporter.Default);
+
+            var md = MemoryDiagnoser.Default;
+            AddDiagnoser(md);
+            AddColumn(new ORMColumn());
+            AddColumn(TargetMethodColumn.Method);
+            AddColumn(new ReturnColumn());
+            AddColumn(StatisticColumn.Mean);
+            AddColumn(StatisticColumn.StdDev);
+            AddColumn(StatisticColumn.Error);
+            AddColumn(BaselineRatioColumn.RatioMean);
+            AddColumnProvider(DefaultColumnProviders.Metrics);
+
+            AddJob(Job.ShortRun
                 .WithLaunchCount(1)
-                .WithWarmupCount(0)
-                .WithTargetCount(5)
-                .WithRemoveOutliers(true)
+                .WithWarmupCount(2)
+                .WithUnrollFactor(BenchmarkBase.Iterations)
+                .WithIterationCount(10)
             );
+            Orderer = new DefaultOrderer(SummaryOrderPolicy.FastestToSlowest);
+            Options |= ConfigOptions.JoinSummary;
         }
     }
 }

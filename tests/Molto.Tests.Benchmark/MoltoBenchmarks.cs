@@ -1,9 +1,8 @@
 ﻿using System.Linq;
 using BenchmarkDotNet.Attributes;
-using BenchmarkDotNet.Attributes.Columns;
-using BenchmarkDotNet.Attributes.Exporters;
 using Molto.Abstractions;
 using Molto.MsSql2014;
+using Molto.PostgreSql;
 
 namespace Molto.Tests.Benchmark
 {
@@ -21,7 +20,8 @@ namespace Molto.Tests.Benchmark
             i = 0;
 
             IDbConnectionProvider dbConnectionProvider = new InMemoryDbConnectionProvider();
-            dbConnectionProvider.AddConnectionFactory("default", new MsSql2014ConnectionMaker(ConnectionString));
+            //dbConnectionProvider.AddConnectionFactory("default", new MsSql2014ConnectionMaker(ConnectionString));
+            dbConnectionProvider.AddConnectionFactory("default", new PostgreSqlConnectionMaker(ConnectionString));
             IDbValueConverter dbValueConverter = new StrategiesDbValueConverter();
             IEntityDatabaseMapProvider entityDatabaseMapProvider = new EntityDatabaseMapProvider(new DirectPropertyEntityMapper());
             IDataReaderToPoco dataReaderToPoco = new DataReaderToPoco(entityDatabaseMapProvider);

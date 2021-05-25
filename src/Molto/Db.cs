@@ -47,8 +47,8 @@ namespace Molto
             _dbConnectionProvider =
                 dbConnectionProvider ?? throw new ArgumentNullException(nameof(dbConnectionProvider));
             _dbValueConverter = dbValueConverter ?? throw new ArgumentNullException(nameof(dbValueConverter));
-            _dataReaderToPoco = dataReaderToPoco;
-            _sqlQueryBuilder = sqlQueryBuilder;
+            _dataReaderToPoco = dataReaderToPoco ?? throw new ArgumentNullException(nameof(dataReaderToPoco));
+            _sqlQueryBuilder = sqlQueryBuilder ?? throw new ArgumentNullException(nameof(sqlQueryBuilder));
         }
 
         public void Dispose()
@@ -147,16 +147,12 @@ namespace Molto
                 using (var r = await GetReaderAsync(cmd).ConfigureAwait(false))
                 {
                     var result = new List<T>();
-                    while (true)
+                    while (await r.ReadAsync().ConfigureAwait(false))
                     {
-                        if (!await r.ReadAsync().ConfigureAwait(false))
-                        {
-                            return result;
-                        }
-
-                        var item = _dataReaderToPoco.Convert<T>(r);
-                        result.Add(item);
+                        result.Add(_dataReaderToPoco.Convert<T>(r));
                     }
+
+                    return result;
                 }
             }
         }
@@ -171,8 +167,7 @@ namespace Molto
                     while (true)
                     {
                         if (!r.Read()) yield break;
-                        var item = _dataReaderToPoco.Convert<T>(r);
-                        yield return item;
+                        yield return _dataReaderToPoco.Convert<T>(r);
                     }
                 }
             }
